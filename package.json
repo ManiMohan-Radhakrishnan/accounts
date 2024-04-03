@@ -83,7 +83,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false && GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "CI=false && GENERATE_SOURCEMAP=false  rm -rf build && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
