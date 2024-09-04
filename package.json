@@ -14,10 +14,12 @@
     "@ramp-network/ramp-instant-sdk": "^3.0.0",
     "@react-oauth/google": "^0.7.0",
     "@react-pdf/renderer": "^1.6.2",
+    "@recon.money/recon-web-sdk": "^0.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@transak/transak-sdk": "^1.2.2",
+    "@wert-io/widget-initializer": "^2.0.3",
     "actioncable": "^5.2.6",
     "antd": "^4.24.0",
     "apexcharts": "^3.35.5",
@@ -83,7 +85,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false && GENERATE_SOURCEMAP=false react-scripts --max_old_space_size=4096 build",
+    "build": "rm -rf build && CI=false && GENERATE_SOURCEMAP=false react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
