@@ -659,6 +659,8 @@ a.list_item_a {
   margin-left: 20rem;
   overflow-x: hidden;
   background-color: #e8ebee !important;
+  background-color: #f2f2f2 !important;
+
   &.profilepage {
     @media screen and (max-width: 767px) {
       padding-bottom: 6rem !important;
@@ -677,7 +679,6 @@ a.list_item_a {
       border-color: #f7cbab;
     }
   }
-  background-color: #f2f2f2 !important;
   &.dashboard-mainblock {
     &.fixed-scroll {
       position: fixed;
