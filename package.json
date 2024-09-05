@@ -4,6 +4,7 @@
   "homepage": "https://accounts.jump.trade/",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.21.0",
     "@devexpress/dx-react-chart": "^3.0.5",
     "@devexpress/dx-react-chart-material-ui": "^3.0.5",
     "@devexpress/dx-react-core": "^3.0.5",
@@ -18,7 +19,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "@transak/transak-sdk": "^1.2.2",
+    "@transak/transak-sdk": "^3.1.2",
     "@wert-io/widget-initializer": "^2.0.3",
     "actioncable": "^5.2.6",
     "antd": "^4.24.0",
@@ -102,6 +103,10 @@
   ],
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
-    "@babel/preset-react": "^7.16.5"
+    "@babel/preset-react": "^7.16.5",
+    "babel-preset-react-app": "^10.0.1"
+  },
+  "resolutions": {
+    "@babel/core": "^7.21.0"
   }
 }
