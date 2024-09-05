@@ -881,13 +881,14 @@
           background: #e9ebee;
           padding: 0.2rem 1rem;
           font-size: 1rem;
+          font-weight: 600;
+
           @media screen and (max-width: 375px) {
             font-size: 0.8rem;
           }
           @media screen and (max-width: 315px) {
             font-size: 0.6rem;
           }
-          font-weight: 600;
           &:first-child {
             border-top-left-radius: 1rem;
           }
