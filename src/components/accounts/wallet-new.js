@@ -68,11 +68,11 @@ import { user_load_by_token_thunk } from "../../redux/thunk/user_thunk";
 import { getCookies } from "../../utils/cookies";
 import RewardWallet from "./reward-wallet";
 import UtCoinRewards from "../utcoins-rewards";
-import {
-  Chart,
-  PieSeries,
-  Title,
-} from "@devexpress/dx-react-chart-material-ui";
+// import {
+//   Chart,
+//   PieSeries,
+//   Title
+// } from "@devexpress/dx-react-chart-material-ui";
 import "./style.scss";
 
 const Wallet = () => {
@@ -1309,7 +1309,7 @@ const Wallet = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Deposit Funds to My GuardianLink Wallet {getPayTitle()}
+            Deposit Funds to My JT Wallet {getPayTitle()}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="card-modal">
@@ -1454,7 +1454,7 @@ const Wallet = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Withdraw Funds from My GuardianLink Wallet {getWithdrawTitle()}
+            Withdraw Funds from My JT Wallet {getWithdrawTitle()}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="card-modal">

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { FiArrowLeft } from "react-icons/fi";
 import { currencyFormat } from "../../utils/common";
-import transakSDK from "@transak/transak-sdk";
+import Transak from "@transak/transak-sdk";
 
 import "./style.scss";
 import { toast } from "react-toastify";
@@ -31,7 +31,7 @@ const TransakPayment = ({ setAddFund, addFund, isCallIt }) => {
 
   const openTransak = () => {
     setAddFund(!addFund);
-    const transak = new transakSDK(settings);
+    const transak = new Transak(settings);
 
     transak.init();
 
@@ -89,7 +89,7 @@ const TransakPayment = ({ setAddFund, addFund, isCallIt }) => {
 
         <div className="mt-5 mb-4 qr-terms border p-4 rounded-3">
           When you make payments using Transak, your payment is processed in
-          equivalent USD, and you transact with Guardian Blockchain Labs Pte
+          equivalent USD, and you transact with Jump Trade Blockchain Labs Pte
           Ltd.
         </div>
 

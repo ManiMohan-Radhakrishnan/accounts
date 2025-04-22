@@ -10,6 +10,7 @@ import {
   currencyFormat,
   roundDown,
   validateCurrency,
+  withoutRound,
 } from "./../../utils/common";
 
 import "./style.scss";
@@ -86,14 +87,16 @@ const CashFreeWithdraw = ({
         setError("Withdrawal amount greater than wallet balance");
       }
     } else {
+      let minAmount = currencyFormat(
+        withdrawFund.fee.min_amount,
+        user.currency_name
+      );
+      let maxAmount = currencyFormat(
+        withdrawFund.fee.max_amount,
+        user.currency_name
+      );
       setError(
-        `Please enter the amount minimum of ${currencyFormat(
-          withdrawFund.fee.min_amount,
-          user.currency_name
-        )} and maximum of ${currencyFormat(
-          withdrawFund.fee.max_amount,
-          user.currency_name
-        )} to withdraw from your wallet`
+        `Please enter the amount minimum of ${minAmount?.props?.children} and maximum of ${maxAmount?.props?.children} to withdraw from your wallet`
       );
     }
   };
@@ -166,7 +169,7 @@ const CashFreeWithdraw = ({
           (parseFloat(input) * parseFloat(withdrawFund.fee.fee_value)) / 100;
 
         if (data > 0) {
-          setReceive(roundDown(data, 2));
+          setReceive(withoutRound(data, 2));
         } else {
           setReceive(0);
         }

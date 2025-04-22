@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import postOne from "../../images/post1.png";
-import { openWindowBlank } from "../../utils/common";
+import { openWindow, openWindowBlank } from "../../utils/common";
 import Stats from "./stats";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import NFTCounter from "../nft-counter";
@@ -10,6 +10,8 @@ import { BsFillTrophyFill } from "react-icons/bs";
 import FusorPopup from "../accounts/fusor-popup";
 import { useSelector } from "react-redux";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import { useQuery } from "../../hooks/url-params";
+import { useLocation } from "react-router-dom";
 
 const NFTCardList = ({
   nft,
@@ -24,12 +26,15 @@ const NFTCardList = ({
   setDetailPop,
   myRentedNft = false,
   setMyRentedRevokePop,
-  hideMenus = false,
+  // hideMenus = false,
   navigation = false,
   reloadData = () => {},
   fusor = false,
-  Reload = () => {},
+  Reload = () => {}
 }) => {
+  const location = useLocation();
+  const query = useQuery(location.search);
+  const hideMenus = query.get("hideMenus");
   const [imageloaded, setImageLoaded] = useState(false);
   const [restrictRevoke, setRestrictRevoke] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
@@ -120,7 +125,9 @@ const NFTCardList = ({
                 setMyRentedRevokePop(true, nft?.slug);
               } else {
                 if (hideMenus) {
-                  return;
+                  openWindow(
+                    `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}?hideMenus=true&hideBack=true`
+                  );
                 } else {
                   openWindowBlank(
                     `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}`
@@ -140,13 +147,17 @@ const NFTCardList = ({
           )}
           <h6
             className="nft-name"
-            onClick={() =>
-              !hideMenus &&
-              navigation &&
-              openWindowBlank(
-                `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}`
-              )
-            }
+            onClick={() => {
+              if (!hideMenus && navigation) {
+                openWindowBlank(
+                  `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}`
+                );
+              } else if (hideMenus && navigation) {
+                openWindow(
+                  `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}?hideMenus=true&hideBack=true`
+                );
+              }
+            }}
           >
             {nft?.name}
           </h6>

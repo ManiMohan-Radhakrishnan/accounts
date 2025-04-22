@@ -11,12 +11,12 @@ import {
   RiRuler2Line,
   RiLockPasswordFill,
   RiDashboardLine,
-  RiTableAltLine,
+  RiTableAltLine
 } from "react-icons/ri";
 import {
   MdCardMembership,
   MdConnectWithoutContact,
-  MdSportsCricket,
+  MdSportsCricket
 } from "react-icons/md";
 import { VscChecklist } from "react-icons/vsc";
 import { BsCardList } from "react-icons/bs";
@@ -41,7 +41,7 @@ import {
   AiFillFacebook,
   AiFillTwitterCircle,
   AiOutlineFileProtect,
-  AiOutlineLink,
+  AiOutlineLink
 } from "react-icons/ai";
 
 function ContextAwareToggle({ children, eventKey, callback }) {
@@ -60,7 +60,7 @@ const SideNav = ({
   MenuList,
   guildUserMenuList,
   getUserPermission,
-  guildInvite,
+  guildInvite
 }) => {
   const [referralDashboard, setreferralDashboard] = useState();
   useEffect(() => {
@@ -89,7 +89,7 @@ const SideNav = ({
     "user-management-profile",
     "user-management-sub-admin",
     "guild-activity",
-    "game-history",
+    "game-history"
   ];
 
   if (isIndiggMenu === "show-menu") {
@@ -229,8 +229,7 @@ const SideNav = ({
               >
                 <ContextAwareToggle eventKey="1">
                   <Link to="/accounts/wallet" className="list_item_a">
-                    <RiWallet3Line className="icon" />{" "}
-                    <span>GuardianLink Wallet</span>
+                    <RiWallet3Line className="icon" /> <span>JT Wallet</span>
                   </Link>
                 </ContextAwareToggle>
               </li>
@@ -255,7 +254,7 @@ const SideNav = ({
                     "limit-orders",
                     "pre-orders",
                     "game-pass",
-                    "bid-activity",
+                    "bid-activity"
                   ].includes(currentPage)
                     ? "list-active"
                     : ""
@@ -656,7 +655,7 @@ const SharePopover = ({
   icon,
   placement,
   title,
-  listedShare = false,
+  listedShare = false
 }) => {
   const referralcode = user?.referral_code;
 

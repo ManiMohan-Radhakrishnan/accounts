@@ -14,7 +14,7 @@ import {
   achPayment,
   fetchFractoCardApi,
   detachFractoACHApi,
-  achVerify,
+  achVerify
 } from "../../api/methods";
 import "./style.scss";
 
@@ -23,7 +23,7 @@ const ACHPayment = ({
   addFund,
   getTransactionHistory,
   setPageNo,
-  getDepositStat,
+  getDepositStat
 }) => {
   const refAmount = useRef(null);
   const { user } = useSelector((state) => state.user.data);
@@ -109,7 +109,7 @@ const ACHPayment = ({
           setLoading2(true);
           const result = await achPayment({
             paymentmethod_id: selectedAccount.paymentmethod_id,
-            amount,
+            amount
           });
           console.log(
             "🚀 ~ file: index.js ~ line 112 ~ handlePayment ~ result",
@@ -135,7 +135,7 @@ const ACHPayment = ({
         }
       } else {
         setError(
-          `Please enter the amount minimum of $${process.env.REACT_APP_FRACTO_ACH_MIN_FUND} and maximum of $${process.env.REACT_APP_FRACTO_ACH_MAX_FUND} to fund your GuardianLink wallet`
+          `Please enter the amount minimum of $${process.env.REACT_APP_FRACTO_ACH_MIN_FUND} and maximum of $${process.env.REACT_APP_FRACTO_ACH_MAX_FUND} to fund your JT wallet`
         );
       }
     } else {
@@ -148,7 +148,7 @@ const ACHPayment = ({
     try {
       await achVerify({
         accountId: metadata.accounts[0].id,
-        publicToken: public_token,
+        publicToken: public_token
       });
       setLoading(false);
 
@@ -303,7 +303,7 @@ const ACHPayment = ({
             {loading2 ? "Processing please wait..." : "Pay"}
           </button>
           <label className="loaded-info">
-            You need to fund your GuardianLink wallet with a minimum of $
+            You need to fund your JT wallet with a minimum of $
             {process.env.REACT_APP_FRACTO_ACH_MIN_FUND} and maximum of $
             {process.env.REACT_APP_FRACTO_ACH_MAX_FUND} per transaction
           </label>

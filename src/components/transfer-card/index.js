@@ -4,7 +4,7 @@ import { OverlayTrigger, Popover, Modal, Button, Form } from "react-bootstrap";
 import {
   openWindowBlank,
   calculateTimeLeft,
-  sameField,
+  sameField
 } from "../../utils/common";
 import postOne from "../../images/post1.png";
 import NFTStat from "../nft-stat";
@@ -51,16 +51,15 @@ const TransferCard = ({ nft, owned = false, isTransfer = false }) => {
     else {
       setConfirm(false);
       try {
-        console.log(nft, "nft");
         const nfts = [
           {
             nft_id: nft?.slug,
-            quantity: 1,
-          },
+            quantity: 1
+          }
         ];
         const result = await transferNFTApis({
           nfts,
-          to_address: address,
+          to_address: address
         });
         if (result?.data?.success) {
           setTransferSuccess(true);

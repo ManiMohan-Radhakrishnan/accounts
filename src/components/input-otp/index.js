@@ -7,7 +7,7 @@ const InputOTP = ({
   title,
   onChange,
   hideLabel = false,
-  disabled=false
+  disabled = false
 }) => {
   return (
     <div className="otp-input">
@@ -19,6 +19,7 @@ const InputOTP = ({
         isInputNum={true}
         separator={"-"}
         isDisabled={disabled}
+        renderInput={(props) => <input {...props} />}
       />
     </div>
   );

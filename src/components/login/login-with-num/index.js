@@ -14,6 +14,7 @@ import CheckLoginType from "../checkLoginType";
 import LoginNavComponent from "../login-nav-component";
 import { Link } from "react-router-dom";
 import GoogleLogin from "../../social-login/google-login";
+import images from "../../../../src/utils/raddx-images.json";
 
 const LoginWithNumber = ({ currentPage, setcurrentPage }) => {
   const dispatch = useDispatch();
@@ -30,12 +31,12 @@ const LoginWithNumber = ({ currentPage, setcurrentPage }) => {
 
   const [login, setLogin] = useState({
     phone_no: "",
-    phone_code: "",
+    phone_code: ""
   });
   const [error, setError] = useState("");
   const [validation, setValidation] = useState({
     number: false,
-    valid_number: false,
+    valid_number: false
   });
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const LoginWithNumber = ({ currentPage, setcurrentPage }) => {
     setLogin({
       ...login,
       phone_no: number?.trim(),
-      phone_code: dialCode?.countryCode,
+      phone_code: dialCode?.countryCode
     });
     if (number) {
       setValidation({ ...validation, number: false });
@@ -143,7 +144,7 @@ const LoginWithNumber = ({ currentPage, setcurrentPage }) => {
         setVerifyLoading(true);
         const result = await otpNumberVerify({
           phone_no: login?.phone_no,
-          sms_otp: otpValue,
+          sms_otp: otpValue
         });
         setVerifyLoading(false);
         if (result?.status === 200) {
@@ -198,18 +199,17 @@ const LoginWithNumber = ({ currentPage, setcurrentPage }) => {
                 <ToolTip
                   icon={
                     <img
-                      src={guardian_logo}
+                      src={images.jt_logo}
                       role="button"
-                      onClick={() =>
-                        openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                      }
+                      // onClick={() =>
+                      //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                      // }
                     />
                   }
                   content={
                     <>
-                      Your GuardianLink ID gives access to all NFT drops,
-                      marketplaces, &amp; other platforms powered by
-                      GuardianLink.
+                      Your Jump Trade ID gives access to all NFT drops,
+                      marketplaces, &amp; other platforms powered by Jump Trade.
                     </>
                   }
                   placement="top"
@@ -320,18 +320,17 @@ const LoginWithNumber = ({ currentPage, setcurrentPage }) => {
                 <ToolTip
                   icon={
                     <img
-                      src={guardian_logo}
+                      src={images.jt_logo}
                       role="button"
-                      onClick={() =>
-                        openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                      }
+                      // onClick={() =>
+                      //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                      // }
                     />
                   }
                   content={
                     <>
-                      Your GuardianLink ID gives access to all NFT drops,
-                      marketplaces, &amp; other platforms powered by
-                      GuardianLink.
+                      Your Jump Trade ID gives access to all NFT drops,
+                      marketplaces, &amp; other platforms powered by Jump Trade.
                     </>
                   }
                   placement="top"

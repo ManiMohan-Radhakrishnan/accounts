@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import {
   user_disable_mfa,
   user_enable_mfa_auth_success,
-  user_disable_mfa_auth_success,
+  user_disable_mfa_auth_success
 } from "../../../redux/actions/user_action";
 import guardian_logo from "../../../images/jump-trade/guardianLinkLogo.png";
 
@@ -21,7 +21,7 @@ import {
   user_load_by_token_thunk,
   user_login_reset_thunk,
   user_login_with_email_thunk,
-  user_login_thunk,
+  user_login_thunk
 } from "./../../../redux/thunk/user_thunk";
 import { openWindowBlank, validateEmail } from "./../../../utils/common";
 import { useQuery } from "./../../../hooks/url-params";
@@ -33,11 +33,12 @@ import {
   resendOtpApi,
   LoginWithOtp,
   ResendEmailOtp,
-  verifyGoogleOtpApi,
+  verifyGoogleOtpApi
 } from "./../../../api/methods";
 
 import GoogleLogin from "../../social-login/google-login";
 import FacebookLogin from "../../social-login/facebook-login";
+import images from "../../../../src/utils/raddx-images.json";
 
 import "./../style.scss";
 
@@ -83,18 +84,17 @@ const ChooseLogin = ({ currentPage, setcurrentPage }) => {
                 <ToolTip
                   icon={
                     <img
-                      src={guardian_logo}
+                      src={images.jt_logo}
                       role="button"
-                      onClick={() =>
-                        openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                      }
+                      // onClick={() =>
+                      //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                      // }
                     />
                   }
                   content={
                     <>
-                      Your GuardianLink ID gives access to all NFT drops,
-                      marketplaces, &amp; other platforms powered by
-                      GuardianLink.
+                      Your Jump Trade ID gives access to all NFT drops,
+                      marketplaces, &amp; other platforms powered by Jump Trade.
                     </>
                   }
                   placement="top"

@@ -1,4 +1,4 @@
-@import "../../../styles/common";
+@use "../../../styles/common" as *;
 .guild-role-section {
   .create-role-section {
     display: flex;

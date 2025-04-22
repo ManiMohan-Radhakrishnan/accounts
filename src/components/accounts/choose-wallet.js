@@ -88,7 +88,7 @@ const ChooseWallet = () => {
             />
             <label for="switch_jumpwallet" className="jump-walet-label">
               <img className="jump" src={jumplogo} />
-              GuardianLink Wallet
+              JT Wallet
             </label>
             <input
               type="radio"
@@ -120,9 +120,8 @@ const ChooseWallet = () => {
           {walletName === "jump_point" ? (
             <div className="mb-2">
               <p>
-                When the JT Points are credited to the GuardianLink wallet,
-                please note that the TDS of 31.2% will be applicable for the
-                Indian users.
+                When the JT Points are credited to the JT wallet, please note
+                that the TDS of 31.2% will be applicable for the Indian users.
               </p>
               <div className="walletmodal-btn-block">
                 <button

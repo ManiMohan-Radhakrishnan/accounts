@@ -29,9 +29,10 @@ const WalletDashboardChart = ({ ChartData, handleDeposit }) => {
           return data["labels"][tooltipItem[0]["index"]];
         },
         label: function (tooltipItem, data) {
-          return currencyFormat(
+          let value = currencyFormat(
             data["datasets"][0]["data"][tooltipItem["index"]]
           );
+          return `${value?.props?.children}`;
         },
         afterLabel: function (tooltipItem, data) {
           var percent = 0;

@@ -14,6 +14,7 @@ import { user_logout_thunk } from "../../redux/thunk/user_thunk";
 import guardian_logo from "../../images/jump-trade/guardianLinkLogo.png";
 
 import { openWindowBlank } from "./../../utils/common";
+import images from "../../../src/utils/raddx-images.json";
 
 import "./style.scss";
 
@@ -28,14 +29,14 @@ const ChangePassword = () => {
   const [error, setError] = useState("");
   const [validation, setValidation] = useState({
     password: false,
-    password_confirmation: false,
+    password_confirmation: false
   });
   const [input, setInput] = useState({
     reset_password_token: resetPasswordToken,
     password: false,
     valid_password: false,
     password_confirmation: false,
-    valid_password_confirmation: false,
+    valid_password_confirmation: false
   });
 
   const [password, setPassword] = useState(true);
@@ -127,13 +128,13 @@ const ChangePassword = () => {
       setValidation({
         ...validation,
         [e.target.name]: false,
-        [`valid_${e.target.name}`]: false,
+        [`valid_${e.target.name}`]: false
       });
     } else {
       setValidation({
         ...validation,
         [e.target.name]: true,
-        [`valid_${e.target.name}`]: false,
+        [`valid_${e.target.name}`]: false
       });
     }
   };
@@ -153,11 +154,11 @@ const ChangePassword = () => {
               <div className="login_logos">
                 <a>
                   <img
-                    src={guardian_logo}
+                    src={images.jt_logo}
                     role="button"
-                    onClick={() =>
-                      openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                    }
+                    // onClick={() =>
+                    //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                    // }
                   />
                 </a>
               </div>
@@ -175,11 +176,11 @@ const ChangePassword = () => {
               <div className="login_logos">
                 <a>
                   <img
-                    src={guardian_logo}
+                    src={images.jt_logo}
                     role="button"
-                    onClick={() =>
-                      openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                    }
+                    // onClick={() =>
+                    //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                    // }
                   />
                 </a>
               </div>

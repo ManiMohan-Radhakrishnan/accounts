@@ -85,14 +85,16 @@ const IppoPaymentWithdraw = ({
         setError("Withdrawal amount greater than wallet balance");
       }
     } else {
+      let minAmount = currencyFormat(
+        withdrawFund.fee.min_amount,
+        user.currency_name
+      );
+      let maxAmount = currencyFormat(
+        withdrawFund.fee.max_amount,
+        user.currency_name
+      );
       setError(
-        `Please enter the amount minimum of ${currencyFormat(
-          withdrawFund.fee.min_amount,
-          user.currency_name
-        )} and maximum of ${currencyFormat(
-          withdrawFund.fee.max_amount,
-          user.currency_name
-        )} to withdraw from your wallet`
+        `Please enter the amount minimum of ${minAmount?.props?.children} and maximum of ${maxAmount?.props?.children} to withdraw from your wallet`
       );
     }
   };

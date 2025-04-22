@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 
 .input-title {
   font-family: $proxima-nova;

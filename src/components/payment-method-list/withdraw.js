@@ -24,7 +24,7 @@ const PaymentMethodListWithdraw = ({
   withdraw,
   WithdrawFund,
   handleWithdraw,
-  setWithDrawTitle,
+  setWithDrawTitle
 }) => {
   const user = useSelector((state) => state.user);
   const [key, setKey] = useState("withdraw");
@@ -58,7 +58,7 @@ const PaymentMethodListWithdraw = ({
                 setWithDrawTitle("Gl_wallet");
               }}
             >
-              My GuardianLink Wallet
+              My JT Wallet
             </div>
             <div
               role={"button"}
@@ -193,7 +193,7 @@ const PayCardWith = ({
   image,
   balance,
   onClick,
-  disabled = false,
+  disabled = false
 }) => {
   const { user } = useSelector((state) => state.user.data);
 

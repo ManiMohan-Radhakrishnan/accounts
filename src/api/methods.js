@@ -26,8 +26,10 @@ export const disableMfaApi = (payload) =>
 export const verifyGoogleOtpApi = (props) =>
   axios.post("/verify_google_otp", { ...props });
 
-export const userApi = (token) =>
-  axios.get("/users/me", { headers: { Authorization: token } });
+export const userApi = (token, params) =>
+  axios.get(params === "game1" ? `/users/me?from_game=game1` : "/users/me", {
+    headers: { Authorization: token },
+  });
 
 export const getDeflationPercentage = () =>
   axios.get("/payments/ippopay/deflation_percentage");
@@ -475,3 +477,15 @@ export const getGameWallet = (wallet_type) =>
   axios.put(`/users/game_wallet`, {
     wallet_type: wallet_type,
   });
+
+export const getTornadoGameLink = () => axios.get(`/external_auth`);
+
+export const gmailAuthOTP = (props) =>
+  axios.post(`/send_gauth_email_otp`, { ...props, source: "web" });
+
+export const getMiniGameDetails = () =>
+  axios.get(`/celebrities/mini_game_celebrities`);
+
+export const getLudoToken = () => {
+  return axios.get(`/users/game_key`);
+};

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { toast } from "react-toastify";
-import CreditCardInput from "react-credit-card-input";
+// import CreditCardInput from "react-credit-card-input";
 
 import {
   crispStyle,
@@ -247,7 +247,7 @@ const NewCardForm = ({ handleHide, trigger, setTrigger }) => {
       <div className="row">
         <div className="col-12">
           <div className="mb-2">
-            <CreditCardInput
+            {/* <CreditCardInput
               onError={({ inputName }) => {
                 console.log(
                   "🚀 ~ file: index.js ~ line 289 ~ NewCardForm ~ inputName",
@@ -283,7 +283,7 @@ const NewCardForm = ({ handleHide, trigger, setTrigger }) => {
                 },
               }}
               fieldClassName="input border"
-            />
+            /> */}
             {(validation.card_number ||
               validation.card_exp ||
               validation.card_cvv) && (

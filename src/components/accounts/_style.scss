@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 
 .bg-hover-dark:hover {
   background-color: #000 !important;

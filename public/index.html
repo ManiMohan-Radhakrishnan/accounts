@@ -26,17 +26,19 @@
       rel="stylesheet"
     />
     <script>
-      window.fwSettings = {
-        widget_id: 84000001506,
-      };
-      !(function () {
-        if ("function" != typeof window.FreshworksWidget) {
-          var n = function () {
-            n.q.push(arguments);
-          };
-          (n.q = []), (window.FreshworksWidget = n);
-        }
-      })();
+      if (window.FreshworksWidget === undenfined) {
+        window.fwSettings = {
+          widget_id: 84000001506
+        };
+        !(function () {
+          if ("function" != typeof window.FreshworksWidget) {
+            var n = function () {
+              n.q.push(arguments);
+            };
+            (n.q = []), (window.FreshworksWidget = n);
+          }
+        })();
+      }
     </script>
     <script
       type="text/javascript"

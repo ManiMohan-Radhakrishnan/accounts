@@ -157,7 +157,7 @@ const PlayerNFTCard = ({
                           window.open(
                             `${
                               process.env.REACT_APP_MARKETPLACE_URL
-                            }/nft-marketplace?search=${
+                            }/nft-marketplace/mcl?search=${
                               nft?.name.toLowerCase().startsWith("meta")
                                 ? nft?.name
                                     .toLowerCase()

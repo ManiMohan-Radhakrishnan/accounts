@@ -18,7 +18,7 @@ import guardian_logo from "../../images/jump-trade/guardianLinkLogo.png";
 import {
   getCookies,
   getCookiesByName,
-  getSourceCookies,
+  getSourceCookies
 } from "../../utils/cookies";
 import { registerApi, trackIP, xena } from "./../../api/methods";
 
@@ -30,12 +30,13 @@ import {
   validateNameReplace,
   openWindowBlank,
   invokeTrackEvent,
-  EVENT_NAMES,
+  EVENT_NAMES
 } from "./../../utils/common";
 import { useQuery } from "../../hooks/url-params";
 
 import GoogleLogin from "../social-login/google-login";
 import FacebookLogin from "../social-login/facebook-login";
+import images from "../../../src/utils/raddx-images.json";
 
 import "./style.scss";
 
@@ -66,7 +67,7 @@ const RegisterComponent = ({ show_success = false }) => {
     phone_code: "",
     accepted_terms_and_condition: true,
     // coupon: "",
-    invite_code: "",
+    invite_code: ""
   });
   const [checked, setChecked] = useState(false);
 
@@ -88,7 +89,7 @@ const RegisterComponent = ({ show_success = false }) => {
     // coupon: false,
     // valid_coupon: false,
     invite_code: false,
-    valid_invite_code: false,
+    valid_invite_code: false
   });
   const location = useLocation();
   const query = useQuery(location.search);
@@ -116,7 +117,7 @@ const RegisterComponent = ({ show_success = false }) => {
       setRegister({
         ...register,
         // coupon: coupon,
-        invite_code: invite_code || getCookiesByName("referralcode"),
+        invite_code: invite_code || getCookiesByName("referralcode")
       });
     }
     const token = getCookies();
@@ -149,7 +150,7 @@ const RegisterComponent = ({ show_success = false }) => {
         if (validateName(e.target.value)) {
           setRegister({
             ...register,
-            [e.target.name]: validateNameReplace(e.target.value),
+            [e.target.name]: validateNameReplace(e.target.value)
           });
           setValidation({ ...validation, [e.target.name]: false });
         }
@@ -309,7 +310,7 @@ const RegisterComponent = ({ show_success = false }) => {
             ...register,
             fsz: c_source,
             guild_source: c_guild_source,
-            source: common_source,
+            source: common_source
           };
         } else if (
           c_source &&
@@ -325,7 +326,7 @@ const RegisterComponent = ({ show_success = false }) => {
           apiInput = {
             ...register,
             guild_source: c_guild_source,
-            source: common_source,
+            source: common_source
           };
         }
         // const phone_number = getMobileNumber(
@@ -340,7 +341,7 @@ const RegisterComponent = ({ show_success = false }) => {
             "First Name": register?.first_name,
             "Last Name": register?.last_name,
             email: register?.email,
-            Phone: `+${register?.phone_no}`,
+            Phone: `+${register?.phone_no}`
           });
           // setRegisterSuccess(true);
           // XENA Marketing Registration Endpoint
@@ -353,7 +354,7 @@ const RegisterComponent = ({ show_success = false }) => {
               source: getCookiesByName("source"),
               vid: getCookiesByName("vid"),
               click_id: getCookiesByName("click_id"),
-              event_name: "registration",
+              event_name: "registration"
             });
             if (process.env.REACT_APP_MARKETING_SCRIPT === "enabled") {
               mixpanel.track("Sign up");
@@ -378,7 +379,7 @@ const RegisterComponent = ({ show_success = false }) => {
           //      );
           //    } else {
           //      setError(
-          //        "This Email is already associated with a GuardianLink ID. Please Login or use a different email to register."
+          //        "This Email is already associated with a Jump Trade ID. Please Login or use a different email to register."
           //      );
           //    }
           //  }
@@ -391,7 +392,7 @@ const RegisterComponent = ({ show_success = false }) => {
                 );
               } else {
                 setError(
-                  "This Email is already associated with a GuardianLink ID. Please Login or use a different email to register."
+                  "This Email is already associated with a Jump Trade ID. Please Login or use a different email to register."
                 );
               }
             } else {
@@ -438,18 +439,18 @@ const RegisterComponent = ({ show_success = false }) => {
                   <ToolTip
                     icon={
                       <img
-                        src={guardian_logo}
-                        alt="Guardian-Logo"
+                        src={images.jt_logo}
+                        alt="JT-Logo"
                         role="button"
-                        onClick={() =>
-                          openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                        }
+                        // onClick={() =>
+                        //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                        // }
                       />
                     }
                     content={
                       <>
-                        Your GuardianLink ID gives access to all NFT drops,
-                        marketplaces, & other platforms powered by GuardianLink.
+                        Your Jump Trade ID gives access to all NFT drops,
+                        marketplaces, & other platforms powered by Jump Trade.
                       </>
                     }
                     placement="top"
@@ -477,18 +478,18 @@ const RegisterComponent = ({ show_success = false }) => {
                   <ToolTip
                     icon={
                       <img
-                        src={guardian_logo}
-                        alt="Guardian-Logo"
+                        src={images.jt_logo}
+                        alt="JT-Logo"
                         role="button"
-                        onClick={() =>
-                          openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                        }
+                        // onClick={() =>
+                        //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                        // }
                       />
                     }
                     content={
                       <>
-                        Your GuardianLink ID gives access to all NFT drops,
-                        marketplaces, & other platforms powered by GuardianLink.
+                        Your Jump Trade ID gives access to all NFT drops,
+                        marketplaces, & other platforms powered by Jump Trade.
                       </>
                     }
                     placement="top"
@@ -601,7 +602,7 @@ const RegisterComponent = ({ show_success = false }) => {
                     setRegister({
                       ...register,
                       phone_no: e,
-                      phone_code: c_code.countryCode.toUpperCase(),
+                      phone_code: c_code.countryCode.toUpperCase()
                     });
                     setPhoneNumberError("");
                     setValidation({ ...validation, phone_no: !e });
@@ -675,7 +676,7 @@ const RegisterComponent = ({ show_success = false }) => {
                     onChange={(e) => {
                       setRegister({
                         ...register,
-                        invite_code: e.target.value.trim(),
+                        invite_code: e.target.value.trim()
                       });
                       if (e) {
                         setValidation({ ...validation, invite_code: false });
@@ -745,7 +746,7 @@ const RegisterComponent = ({ show_success = false }) => {
 
               <div className="form-group bl_forgot mb-2">
                 <p className="text-center">
-                  <span>Already have a GuardianLink ID? </span>
+                  <span>Already have a Jump Trade ID? </span>
                   <Link to="/signin" className="bold-font">
                     Sign In
                   </Link>
@@ -758,7 +759,7 @@ const RegisterComponent = ({ show_success = false }) => {
                   target="_blank"
                 >
                   {" "}
-                  Why do you need a GuardianLink account?{" "}
+                  Why do you need a Jump Trade account?{" "}
                 </a>{" "}
               </p> */}
             </div>

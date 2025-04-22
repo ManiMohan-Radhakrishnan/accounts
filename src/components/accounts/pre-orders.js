@@ -29,10 +29,10 @@ const PreOrders = () => {
   const [disable, setDisable] = useState(true); //actual value false
 
   const [profile, setProfile] = useState({
-    quantity: "",
+    quantity: ""
   });
   const [validation, setValidation] = useState({
-    quantity: false,
+    quantity: false
   });
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const PreOrders = () => {
         if (validateQuantity(e.target.value)) {
           setProfile({
             ...profile,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
           });
           setValidation({ ...validation, [e.target.name]: false });
         }
@@ -262,9 +262,8 @@ const PreOrders = () => {
           <>
             <div className="modal-confirm-body">
               Sorry, early access to pre-book is currently open to only
-              community members who are already trading in the GuardianLink NFT
-              ecosystem (BeyondLife.club, Fully Faltoo, Hindustan Times, LA
-              Times, etc..)
+              community members who are already trading in the JT NFT ecosystem
+              (BeyondLife.club, Fully Faltoo, Hindustan Times, LA Times, etc..)
               <div className="mt-3">
                 Pre-book feature opens for everyone after{" "}
                 <NFTCounter

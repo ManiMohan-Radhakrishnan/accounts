@@ -9,16 +9,17 @@ import { forgotPasswordApi } from "./../../api/methods";
 import { openWindowBlank } from "./../../utils/common";
 import ToolTip from "../tooltip";
 import guardian_logo from "../../images/jump-trade/guardianLinkLogo.png";
+import images from "../../../src/utils/raddx-images.json";
 
 const ForgotPasswordComponent = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validation, setValidation] = useState({
     email: false,
-    valid_email: false,
+    valid_email: false
   });
   const [input, setInput] = useState({
-    email: "",
+    email: ""
   });
 
   const handleSubmit = async () => {
@@ -88,18 +89,18 @@ const ForgotPasswordComponent = () => {
                   <ToolTip
                     icon={
                       <img
-                        src={guardian_logo}
+                        src={images.jt_logo}
                         role="button"
-                        onClick={() =>
-                          openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                        }
+                        // onClick={() =>
+                        //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                        // }
                       />
                     }
                     content={
                       <>
-                        Your GuardianLink ID gives access to all NFT drops,
-                        marketplaces, &amp; other platforms powered by
-                        GuardianLink.
+                        Your Jump Trade ID gives access to all NFT drops,
+                        marketplaces, &amp; other platforms powered by Jump
+                        Trade.
                       </>
                     }
                     placement="top"
@@ -132,18 +133,18 @@ const ForgotPasswordComponent = () => {
                   <ToolTip
                     icon={
                       <img
-                        src={guardian_logo}
+                        src={images.jt_logo}
                         role="button"
-                        onClick={() =>
-                          openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                        }
+                        // onClick={() =>
+                        //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                        // }
                       />
                     }
                     content={
                       <>
-                        Your GuardianLink ID gives access to all NFT drops,
-                        marketplaces, &amp; other platforms powered by
-                        GuardianLink.
+                        Your Jump Trade ID gives access to all NFT drops,
+                        marketplaces, &amp; other platforms powered by Jump
+                        Trade.
                       </>
                     }
                     placement="top"

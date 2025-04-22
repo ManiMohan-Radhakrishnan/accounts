@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 
 body {
   margin: 0;
@@ -659,8 +659,6 @@ a.list_item_a {
   margin-left: 20rem;
   overflow-x: hidden;
   background-color: #e8ebee !important;
-  background-color: #f2f2f2 !important;
-
   &.profilepage {
     @media screen and (max-width: 767px) {
       padding-bottom: 6rem !important;
@@ -679,6 +677,7 @@ a.list_item_a {
       border-color: #f7cbab;
     }
   }
+  background-color: #f2f2f2 !important;
   &.dashboard-mainblock {
     &.fixed-scroll {
       position: fixed;
@@ -1037,16 +1036,17 @@ a.list_item_a {
   }
   .internal-heading-sec.mnft-page {
     display: flex;
+    // flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     &.internal-heading-sec-sm {
-      @media screen and (max-width: 578px) {
+      @media screen and (max-width: 992px) {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
       }
       .game-switch {
-        max-width: 25rem;
+        max-width: 40rem;
       }
     }
     @media screen and (max-width: 767px) {
@@ -1069,6 +1069,13 @@ a.list_item_a {
           display: block;
         }
       }
+      &.web-show {
+        display: none;
+
+        @media screen and (min-width: 767px) {
+          display: block;
+        }
+      }
     }
     .game-switch {
       display: flex;
@@ -1076,18 +1083,23 @@ a.list_item_a {
       border-radius: 0.5rem;
       border: 1px solid #dbdcdc;
       overflow: hidden;
-      max-width: 20rem;
+      max-width: 40rem;
       background: #dcdcdc;
       color: #000;
-      @media screen and (min-width: 768px) {
-        max-width: 28rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      &::-webkit-scrollbar {
+        height: 0px;
       }
-      @media screen and (max-width: 420px) {
-        max-width: 15rem;
-        margin-left: auto;
-      }
+      // @media screen and (min-width: 768px) {
+      //   max-width: 30rem;
+      // }
+      // @media screen and (max-width: 420px) {
+      //   max-width: 15rem;
+      //   margin-left: auto;
+      // }
       .switch {
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 0.8rem;
         width: 50%;
         display: flex;
         align-items: center;
@@ -1097,8 +1109,12 @@ a.list_item_a {
         font-weight: 600;
         cursor: pointer;
         user-select: none;
+        span {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
         @media screen and (max-width: 420px) {
-          padding: 0.3rem 1rem;
+          padding: 0.3rem 0.25rem;
           font-size: 1rem;
         }
         &.active {
@@ -2099,6 +2115,7 @@ border-top-left-radius: 7px;*/
   .switch {
     position: relative;
     display: inline-block;
+    text-transform: capitalize;
   }
 
   .switch-input {
@@ -3806,6 +3823,14 @@ border-top-left-radius: 7px;*/
       }
     }
   }
+
+  .no-game-section {
+    position: absolute;
+    top: 50%;
+    width: 80%;
+    text-align: center;
+    font-size: 18px;
+  }
 }
 
 .flex-block-pill {
@@ -4087,6 +4112,9 @@ border-top-left-radius: 7px;*/
     }
     td.payment-content {
       text-transform: capitalize;
+    }
+    td.asset-type {
+      text-transform: initial;
     }
   }
 }

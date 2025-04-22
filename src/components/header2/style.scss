@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 .bl_header {
   position: absolute;
   width: 100%;

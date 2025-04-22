@@ -22,14 +22,14 @@ const IndiggProfile = ({ guildUserMenuPermissionList }) => {
           {/* <div ref={mynft}></div> */}
           <div className="about-user">
             <div className="row">
-              <div className="col-md-12 ">
+              <div className="col-md-12 mt-4">
                 {/* <div className="mb-4 about-heading mynft-heading"> */}
                 <div className="internal-heading-sec guild-heading-sec">
-                  <h3 className="about-title">Guild NFTs</h3>
                   <div className="me-2"></div>
                 </div>
                 <div className="internal-heading-sec mnft-page">
-                  <h3 className="about-title mobile-show">My NFTs</h3>
+                  <h3 className="about-title web-show">Guild NFTs</h3>
+                  <h3 className="about-title mobile-show">Guild NFTs</h3>
                   <div className="game-switch">
                     <span
                       className={`switch ${isMclGame ? "active" : ""}`}

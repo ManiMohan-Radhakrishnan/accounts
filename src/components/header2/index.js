@@ -77,7 +77,7 @@ const Header2 = () => {
                   className="header-powereby"
                   onClick={() => openWindow(process.env.REACT_APP_GUARDIAN_URL)}
                 >
-                  Powered by GuardianLink
+                  Powered by Jump Trade
                 </span> */}
                 <img
                   className="brand-logo"
@@ -92,7 +92,7 @@ const Header2 = () => {
                   href="https://www.guardianlink.io/"
                   target="_blank"
                 >
-                  <span>|</span> A GuardianLink Brand
+                  <span>|</span> A Jump Trade Brand
                 </a> */}
               </div>
 

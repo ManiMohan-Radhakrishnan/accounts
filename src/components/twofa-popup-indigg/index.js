@@ -9,7 +9,7 @@ import {
   sendEmailAssignOtpApi,
   resenEmaildAssignOtpApi,
   AssignRoleApi,
-  getRoles,
+  getRoles
 } from "../../api/methods";
 
 import InputOTP from "../input-otp";
@@ -22,13 +22,13 @@ const TwofaPopup = ({
   setShow,
   twoFactorUserData,
   ReloadData,
-  guildUserMenuPermissionList,
+  guildUserMenuPermissionList
 }) => {
   const [roleList, setRoleList] = useState({});
   const initial2fa = {
     id: twoFactorUserData?.slug,
     otp: "",
-    role_id: "",
+    role_id: ""
   };
 
   const [validation, setValidation] = useState({
@@ -36,7 +36,7 @@ const TwofaPopup = ({
     valid_email: false,
     existing_role: false,
     valid_otp: false,
-    otp: false,
+    otp: false
   });
 
   useEffect(() => {
@@ -189,7 +189,6 @@ const TwofaPopup = ({
     if (verifyEmail()) {
       try {
         const result = await resenEmaildAssignOtpApi();
-        console.log(result, "result");
         if (result?.data?.success) {
           toast.success("OTP has been resent");
           setInputDisabled(false);
@@ -338,7 +337,7 @@ const TwofaPopup = ({
                               onClick={(e) => {
                                 setTwofaverifydata({
                                   ...twofaverifydata,
-                                  role_id: roleList[roleData],
+                                  role_id: roleList[roleData]
                                 });
                                 setUserRole(roleData);
                               }}

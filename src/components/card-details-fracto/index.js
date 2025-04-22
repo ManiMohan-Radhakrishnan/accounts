@@ -24,7 +24,7 @@ const CardDetailsFracto = ({
   setPageNo,
   getTransactionHistory,
   isFirstDeposit,
-  getDepositStat,
+  getDepositStat
 }) => {
   const { user } = useSelector((state) => state.user.data);
   const [modal, setModal] = useState(false);
@@ -118,7 +118,7 @@ const CardDetailsFracto = ({
                 ftd: isFirstDeposit ? 1 : 0,
                 deposit_amt: amount,
                 payment_type: "fracto_card",
-                is_datas_present: "true",
+                is_datas_present: "true"
               });
             } else {
               xena({
@@ -127,7 +127,7 @@ const CardDetailsFracto = ({
                 ftd: isFirstDeposit ? 1 : 0,
                 deposit_amt: amount,
                 payment_type: "fracto_card",
-                is_datas_present: "false",
+                is_datas_present: "false"
               });
             }
 
@@ -146,7 +146,7 @@ const CardDetailsFracto = ({
           }
         } else {
           setError(
-            `Please enter the amount minimum of $${process.env.REACT_APP_FRACTO_MIN_FUND} and maximum of $${process.env.REACT_APP_FRACTO_MAX_FUND} to fund your GuardianLink wallet`
+            `Please enter the amount minimum of $${process.env.REACT_APP_FRACTO_MIN_FUND} and maximum of $${process.env.REACT_APP_FRACTO_MAX_FUND} to fund your JT wallet`
           );
         }
       } else {
@@ -330,7 +330,7 @@ const CardDetailsFracto = ({
                 {loading ? "Processing please wait..." : "Pay"}
               </button>
               <label className="loaded-info">
-                You need to fund your GuardianLink wallet with a minimum of $
+                You need to fund your JT wallet with a minimum of $
                 {process.env.REACT_APP_FRACTO_MIN_FUND} and maximum of $
                 {process.env.REACT_APP_FRACTO_MAX_FUND} per transaction
               </label>

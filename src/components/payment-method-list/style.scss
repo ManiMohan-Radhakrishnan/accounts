@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 .pay-list-card {
   background: #ffffff;
   border: 2px solid #ededed;

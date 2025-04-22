@@ -43,8 +43,8 @@ const BitbnsPayment = ({ setAddFund, addFund }) => {
 
         <div className="mt-5 mb-4 qr-terms border p-4 rounded-3">
           When you make payments using Onramp, your payment is processed in
-          equivalent USD, and you transact with Guardian Blockchain Labs Pte
-          Ltd.
+          equivalent USD, and you transact with Jump Trade Blockchain Labs Pte
+          Ltd
         </div>
 
         <>
@@ -81,7 +81,7 @@ const BitbnsPayment = ({ setAddFund, addFund }) => {
                 display: "block",
                 width: "100%",
                 maxHeight: "100%",
-                maxWidth: "100%",
+                maxWidth: "100%"
               }}
             ></iframe>
           </Modal.Body>

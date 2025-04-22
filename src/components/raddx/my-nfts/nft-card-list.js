@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { AiOutlineDollarCircle } from "react-icons/ai";
+import { useLocation } from "react-router-dom";
 
 import NFTCounter from "../../nft-counter";
-
 import Stats from "./stats";
+import {
+  DEFAULT_REVENUE_SHARE,
+  getOS,
+  openWindow
+} from "../../../utils/common";
+import images from "../../../utils/raddx-images.json";
+import "./styles.scss";
+import { useQuery } from "../../../hooks/url-params";
 import {
   currencyFormat,
   openWindowBlank,
   validateCurrency,
-  validateCurrencyBundleNft,
+  validateCurrencyBundleNft
 } from "../../../utils/common";
-import { DEFAULT_REVENUE_SHARE } from "../../../utils/common";
-
-import images from "../../../utils/raddx-images.json";
-
-import "./styles.scss";
 
 const NFTCardList = ({
   nft,
@@ -31,11 +34,14 @@ const NFTCardList = ({
   setDetailPop,
   myRentedNft = false,
   setMyRentedRevokePop,
-  hideMenus = false,
+  // hideMenus = false,
   navigation = false,
   handleNftPriceChange = () => {},
-  nftPrices = {},
+  nftPrices = {}
 }) => {
+  const location = useLocation();
+  const query = useQuery(location.search);
+  const hideMenus = query.get("hideMenus");
   const [imageloaded, setImageLoaded] = useState(false);
   const [restrictRevoke, setRestrictRevoke] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
@@ -136,7 +142,9 @@ const NFTCardList = ({
                   setMyRentedRevokePop(true, nft?.slug);
                 } else {
                   if (hideMenus) {
-                    return;
+                    openWindow(
+                      `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}?hideMenus=true&hideBack=true`
+                    );
                   } else {
                     openWindowBlank(
                       `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}`
@@ -153,13 +161,17 @@ const NFTCardList = ({
             )}
             <h6
               className="nft-name"
-              onClick={() =>
-                !hideMenus &&
-                navigation &&
-                openWindowBlank(
-                  `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}`
-                )
-              }
+              onClick={() => {
+                if (!hideMenus && navigation) {
+                  openWindowBlank(
+                    `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}`
+                  );
+                } else if (hideMenus && navigation) {
+                  openWindow(
+                    `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${nft.slug}?hideMenus=true&hideBack=true`
+                  );
+                }
+              }}
             >
               {nft?.name}
             </h6>
@@ -255,10 +267,15 @@ const NFTCardList = ({
                           Set Price{" "}
                           <span className={`text-red`}>
                             Min.{" "}
-                            {currencyFormat(
-                              process.env.REACT_APP_MAX_AMOUNT_LAND,
-                              "USD"
-                            )}
+                            {getOS() === "iOS" && hideMenus
+                              ? currencyFormat(
+                                  process.env.REACT_APP_MAX_AMOUNT_LAND,
+                                  ""
+                                )
+                              : currencyFormat(
+                                  process.env.REACT_APP_MAX_AMOUNT_LAND,
+                                  "USD"
+                                )}
                           </span>
                         </label>
                       )}
@@ -275,10 +292,15 @@ const NFTCardList = ({
                           Set Price{" "}
                           <span className={`text-red`}>
                             Min.{" "}
-                            {currencyFormat(
-                              process.env.REACT_APP_MAX_AMOUNT_BUILDING,
-                              "USD"
-                            )}
+                            {getOS() === "iOS" && hideMenus
+                              ? currencyFormat(
+                                  process.env.REACT_APP_MAX_AMOUNT_BUILDING,
+                                  ""
+                                )
+                              : currencyFormat(
+                                  process.env.REACT_APP_MAX_AMOUNT_BUILDING,
+                                  "USD"
+                                )}
                           </span>
                         </label>
                       )}
@@ -287,7 +309,11 @@ const NFTCardList = ({
                 }
               })()}
               <div className="input-currency-box">
-                <span className={"sale-currency"}>$</span>
+                <span className={"sale-currency"}>
+                  {getOS() === "iOS" && hideMenus
+                    ? currencyFormat(0, "gem")
+                    : "$"}
+                </span>
                 <input
                   value={nftPrices[nft?.slug]}
                   // value={erc721Sale.buyAmount}

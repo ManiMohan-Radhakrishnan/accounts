@@ -24,6 +24,7 @@ export const USER_PAN_NAME_VALID = "USER_PAN_NAME_VALID";
 export const USER_PAN_MISMATCH_ERROR = "USER_PAN_MISMATCH_ERROR";
 export const USER_PAN_NAME = "USER_PAN_NAME";
 export const UPI_ID_DISABLED = "UPI_ID_DISABLED";
+export const MINI_GAME_INFO = "MINI_GAME_INFO";
 
 export const user_login_action_request = () => {
   return {
@@ -180,6 +181,13 @@ export const getPanName = (input = "") => {
 export const getUpiIdDisabled = (input = false) => {
   return {
     type: UPI_ID_DISABLED,
+    payload: input,
+  };
+};
+
+export const setMiniGameInfo = (input = []) => {
+  return {
+    type: MINI_GAME_INFO,
     payload: input,
   };
 };

@@ -16,6 +16,7 @@ import {
   verifyGoogleOtpApi,
   disableMfaApi,
   mfaDetailsApi,
+  gmailAuthOTP,
 } from "../../api/methods";
 import OtpInput from "react-otp-input";
 import Modal from "react-bootstrap/Modal";
@@ -23,7 +24,6 @@ import { toast } from "react-toastify";
 import AuthenticationIcon from "../../images/authicon.svg";
 import "./style.scss";
 import Alert from "react-bootstrap/Alert";
-import { FaLessThanEqual } from "react-icons/fa";
 
 export default function MfaOption(props) {
   const [error, setError] = useState(null);
@@ -39,7 +39,6 @@ export default function MfaOption(props) {
   const [isChecked, setIsChecked] = useState(true);
 
   const handleClose = () => setShow(false);
-  // console.log(isChecked, 'isChecked')
   const [showdisable, setShowdisable] = useState(false);
   const handleClosedisable = () => setShowdisable(false);
   // const handleShow = () => setShow(true);
@@ -47,9 +46,33 @@ export default function MfaOption(props) {
   const [showAlert, setShowAlert] = useState(false);
   const [noError, setNoError] = useState(true);
 
+  const userEmail = user?.data?.user?.email;
+  // const [otpSuccess, setOtpSuccess] = useState(false);
+  const [emailOtpValue, setEmailOtpValue] = useState("");
+  // const [emailOTPVerifyLoading, setEmailOTPVerifyLoading] = useState(false);
+  const [sendOTPDisabled, setSendOTPDisabled] = useState(false);
+  const [sendOTPLoading, setSendOTPLoading] = useState(false);
+  const [delay, setDelay] = useState(60);
+
+  // const [verifyOTPError, setVerifyOTPError] = useState("");
+
   useEffect(() => {
     handelcheckMfaStatus();
   }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDelay(delay - 1);
+    }, 1000);
+
+    if (delay === 0) {
+      clearInterval(timer);
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [sendOTPDisabled, delay]);
 
   const handelcheckMfaStatus = async () => {
     try {
@@ -98,7 +121,10 @@ export default function MfaOption(props) {
       try {
         setVerifyLoading(true);
         //google auth api based call
-        const payload = { otp_code: otpValue };
+        const payload = {
+          email: { source: "web", otp: emailOtpValue },
+          otp_code: otpValue,
+        };
 
         if (showdisable) {
           setVerifyLoading(false);
@@ -128,14 +154,62 @@ export default function MfaOption(props) {
       } catch (error) {
         setVerifyLoading(false);
         setInvalidCode(true);
-        setError(
-          "It seems you have entered the wrong Code. Please check the number(s) you have entered."
-        );
+        setError(error?.data?.message);
       }
     } else {
       setError("Please enter the Code");
     }
   };
+
+  const handleSendOtp = async () => {
+    try {
+      let params = { email: userEmail };
+      setSendOTPLoading(true);
+      const result = await gmailAuthOTP(params);
+      if (result?.data?.status === 200) {
+        // setOtpSuccess(true);
+        setSendOTPDisabled(true);
+        toast.success(result?.data?.data?.message);
+      }
+      setSendOTPLoading(false);
+    } catch (err) {
+      setSendOTPLoading(false);
+      toast.error(err?.data?.message);
+      console.log("🚀 ~ handleSendOtp ~ err:", err);
+    }
+  };
+
+  // const handleEmailVerify = async () => {
+  //   try {
+  //     setEmailOTPVerifyLoading(true);
+  //     let params = { email: userEmail, otp: emailOtpValue };
+  //     const result = await verifyOtpApi(params);
+  //     setVerifyOTPError("");
+  //     setEmailOTPVerifyLoading(false);
+  //   } catch (err) {
+  //     console.log("🚀 ~ handleEmailVerify ~ err:", err);
+  //     setVerifyOTPError(err?.data?.message);
+  //     setEmailOTPVerifyLoading(false);
+  //   }
+  // };
+
+  const handleSendOTPEvent = () => {
+    if (!sendOTPDisabled) {
+      handleSendOtp();
+      setDelay(60);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSendOTPDisabled(false);
+    }, 60000);
+
+    return () => clearTimeout(timer);
+  }, [sendOTPDisabled]);
+
+  const seconds = delay ? String(delay % 60).padStart(2, 0) : null;
+  const minutes = delay ? String(Math.floor(delay / 60)).padStart(2, 0) : null;
 
   return (
     <div className="bl_form_box_new">
@@ -195,10 +269,86 @@ export default function MfaOption(props) {
                         iOS App Store
                       </a>
                     </p>
+                    <div className="step-content">
+                      <h5>Step 1</h5>
+                      <h5>Email Verification</h5>
+                      <p>
+                        Click on "Get OTP" and enter the OTP received in your
+                        registered email address.
+                      </p>
+                    </div>
+                    <p className="email-verify">
+                      {user?.data?.user?.email}
+                      {/* <span
+                        disabled={sendOTPDisabled}
+                        className={`${
+                          sendOTPDisabled || sendOTPLoading ? "disabled" : ""
+                        }`}
+                        onClick={handleSendOTPEvent}
+                      >
+                        Send OTP
+                      </span> */}
+                    </p>
+                    {/* {otpSuccess && (
+                      <> */}
+                    <div className="otp-input">
+                      {/* <p className="otp-info">
+                            Please enter the OTP sent to{" "}
+                            <span>{userEmail}</span>
+                          </p> */}
+                      <OtpInput
+                        value={emailOtpValue}
+                        onChange={(e) => {
+                          setEmailOtpValue(e);
+                          setError("");
+                        }}
+                        numInputs={6}
+                        isInputNum={true}
+                        separator={"-"}
+                      />
+                      <span
+                        // disabled={sendOTPDisabled}
+                        className={`${
+                          sendOTPDisabled || sendOTPLoading ? "disabled" : ""
+                        }`}
+                        onClick={handleSendOTPEvent}
+                      >
+                        {sendOTPDisabled
+                          ? `Please wait ${minutes}:${seconds}`
+                          : "Get OTP"}
+                      </span>
+                    </div>
+                    {/* <div>
+                          <button
+                            type="button"
+                            className="btn btn-dark mx-auto"
+                            onClick={handleEmailVerify}
+                            disabled={
+                              emailOTPVerifyLoading ||
+                              emailOtpValue.length !== 6
+                            }
+                          >
+                            {emailOTPVerifyLoading ? "Verifying..." : "Verify"}
+                          </button>
+                        </div>
+                        {verifyOTPError && (
+                          <p className="error_text_new text-center verify-errortext mt-2">
+                            {verifyOTPError}
+                          </p>
+                        )} */}
+                    {/* </>
+                    )} */}
                   </div>
                   <div>
                     {showQr && qrValue && (
-                      <div className="qr_code_new">
+                      <div
+                        className={`qr_code_new ${
+                          emailOtpValue?.length < 6 || !emailOtpValue
+                            ? "hide-section"
+                            : ""
+                        }`}
+                      >
+                        <h5>Step 2</h5>
                         <h5>Set up authenticator app</h5>
                         <ul>
                           <li> In the Google Authenticator app, tap the +</li>
@@ -244,7 +394,10 @@ export default function MfaOption(props) {
                                 type="button"
                                 className="btn btn-dark  mx-auto"
                                 onClick={(e) => handleVerifyOTP(e)}
-                                disabled={!verifyLoading && !isChecked}
+                                disabled={
+                                  (!verifyLoading && !isChecked) ||
+                                  emailOtpValue?.length < 6
+                                }
                               >
                                 <>{verifyLoading ? "Verifying..." : "Verify"}</>
                               </button>
@@ -368,8 +521,8 @@ export default function MfaOption(props) {
               <p className="mb-0 alert-text-enable">
                 {/* Note: Multi-Factor Authentication is not applicable for MCL Game App */}
                 <span className="text-bold">
-                  Note: Multi-Factor Authentication is not applicable for MCL
-                  Game App.
+                  Note: Multi-Factor Authentication is not applicable for
+                  Jump.trade associated games.
                 </span>
               </p>
             </>
@@ -379,8 +532,8 @@ export default function MfaOption(props) {
           <p className="mb-0 alert-text">
             {/* Note: Multi-Factor Authentication is not applicable for MCL Game App */}
             <span className="text-danger">
-              You have been logged out of Jump.trade and MCL game from all
-              devices. Please log in again to continue.
+              You have been logged out of Jump.trade and its associated games
+              from all devices. Please log in again to continue.
             </span>
           </p>
           <br />

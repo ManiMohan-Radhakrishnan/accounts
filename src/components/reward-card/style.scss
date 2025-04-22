@@ -1,7 +1,7 @@
 // .progress-block {
 //   width: 15% !important;
 // }
-@import "../../styles/common";
+@use "../../styles/common" as *;
 section.reward-wallet-block {
   .redeem-table-block {
     .price1 {

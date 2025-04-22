@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 
 .user-profile-table-pagination {
   display: flex;
@@ -97,18 +97,18 @@
       animation: skeleton2 1.2s linear infinite;
       background: #c7cacb;
     }
-    
+
     @keyframes skeleton2 {
       0% {
         transform: translateX(-50%);
         opacity: 0.2;
       }
-    
+
       50% {
         transform: translateX(50%);
         opacity: 0.4;
       }
-    
+
       100% {
         transform: translateX(150%);
         opacity: 0.2;

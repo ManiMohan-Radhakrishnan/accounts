@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 .primary-invoice-card {
   display: flex;
   align-items: flex-start;

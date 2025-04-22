@@ -1,29 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Offcanvas, Popover, OverlayTrigger } from "react-bootstrap";
-import { toast } from "react-toastify";
-import { BsArrowLeft } from "react-icons/bs";
-import { IoMdClose } from "react-icons/io";
-import Lottie from "lottie-react";
+import { FaCheckCircle } from "react-icons/fa";
 
-import {
-  allowForRental,
-  userOwnedNFTsApi,
-} from "../../api/methods-marketplace";
+import { userOwnedNFTsApi } from "../../api/methods-marketplace";
 import { whitelistedCryptoList, withdrawBalanceApi } from "../../api/methods";
+import { GAMES } from "../../utils/game-config";
 
 import NFTCardList from "./nft-card-list";
 import NoRecord from "./no-record";
-import FilterSection from "../filter-section";
-import BulkRent from "./bulk-rent";
-
-import successAnim from "../../images/jump-trade/json/Tick.json";
-import failureAnim from "../../images/jump-trade/json/Cancel.json";
-import { openWindowBlank } from "../../utils/common";
 
 import "./styles.scss";
-import { BiX } from "react-icons/bi";
-import { GAMES } from "../../utils/game-config";
-import { FaCheckCircle } from "react-icons/fa";
 
 const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
   const [list, setList] = useState([]);
@@ -39,9 +24,9 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
   const [filterCount, setFilterCount] = useState(0);
   const [nextPage, setNextPage] = useState(false);
   const [page, setPage] = useState(1);
+  const [burnRequestPage, setBurnRequestPage] = useState(1);
   const filtersRef = useRef({});
   const [selectAllDisabled, setSelectAllDisabled] = useState(false);
-
   const [key, setKey] = useState("Initiate");
   const [cryptoList, setCryptoList] = useState([]);
   const [networks, setNetworks] = useState([]);
@@ -62,7 +47,10 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
     // Reset the data and loading state when the key changes
     setKey(newKey);
     if (newKey === "Initiate") getList({ page });
-    if (newKey === "cancel") getListedCancel({ page });
+    if (newKey === "cancel") {
+      setList([]);
+      getListedCancel({ burnRequestPage });
+    }
   }
 
   const getList = async ({
@@ -106,6 +94,7 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
       console.log(error);
       setLoading(false);
       setMoreLoading(false);
+      setNextPage(false);
     }
   };
 
@@ -115,7 +104,7 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
   };
 
   const getListedCancel = async ({
-    page,
+    burnRequestPage,
     filters = null,
     load = false,
     filterArePresent = false,
@@ -130,7 +119,7 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
         setLoading(true);
       }
 
-      const result = await userOwnedNFTsApi(page, {
+      const result = await userOwnedNFTsApi(burnRequestPage, {
         sale_kind: "",
         game_names: [GAMES.MCL],
         ...filtersRef.current,
@@ -155,12 +144,17 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
       console.log(error);
       setLoading(false);
       setMoreLoading(false);
+      setNextPage(false);
     }
   };
 
   const loadMoreRequestCancel = () => {
-    getListedCancel({ page: page + 1, load: true, filterArePresent: true });
-    setPage(page + 1);
+    getListedCancel({
+      burnRequestPage: burnRequestPage + 1,
+      load: true,
+      filterArePresent: true,
+    });
+    setBurnRequestPage(burnRequestPage + 1);
   };
 
   const handleFilter = ({
@@ -189,7 +183,6 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
   const getBalance = async () => {
     try {
       const result = await withdrawBalanceApi();
-      console.log(result);
       setWithdrawBalanceList(result?.data?.data);
     } catch (error) {
       setWithdrawBalanceList({});
@@ -207,11 +200,6 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
 
   return (
     <>
-      {/* <FilterSection
-        onFilterChange={handleFilter}
-        filteredNFTCount={filterCount}
-        burnBatFilter
-      /> */}
       <div className="mycard-head">
         <div className="flex-block-pill mt-3">
           <div
@@ -219,7 +207,6 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
             className={`rounded-pill ps-3 pe-3 mb-3 me-3 pt-1 pb-1 activity-filter-pill ${
               key === "Initiate" ? "active" : ""
             }`}
-            // onClick={() => setKey("Initiate")}
             onClick={() => handleKeyChange("Initiate")}
           >
             {key === "Initiate" && (
@@ -232,7 +219,6 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
             className={`rounded-pill ps-3 pe-3 mb-3 me-3 pt-1 pb-1 activity-filter-pill ${
               key === "cancel" ? "active" : ""
             }`}
-            // onClick={() => setKey("cancel")}
             onClick={() => handleKeyChange("cancel")}
           >
             {key === "cancel" && (
@@ -285,15 +271,15 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
                 <h5>Loading...</h5>
               </div>
             )}
-            {nextPage && (
+            {nextPage && !loading && (
               <div className="d-flex justify-content-center w-100">
                 <button
                   className="btn btn-outline-dark text-center rounded-pill mt-5 mb-3 loadmore-btn"
                   type="button"
-                  disabled={loading}
+                  disabled={moreLoading}
                   onClick={loadMoreRequest}
                 >
-                  {loading ? "Loading..." : "Load More"}
+                  {moreLoading ? "Loading..." : "Load More"}
                 </button>
               </div>
             )}
@@ -343,18 +329,18 @@ const BurnBatNft = ({ setActiveTab, hideMenus, setCount }) => {
                   <h5>Loading...</h5>
                 </div>
               )}
-              {/* {nextPage && (
+              {nextPage && !loading && (
                 <div className="d-flex justify-content-center w-100">
                   <button
                     className="btn btn-outline-dark text-center rounded-pill mt-5 mb-3 loadmore-btn"
                     type="button"
-                    disabled={loading}
+                    disabled={moreLoading}
                     onClick={loadMoreRequestCancel}
                   >
-                    {loading ? "Loading..." : "Load More"}
+                    {moreLoading ? "Loading..." : "Load More"}
                   </button>
                 </div>
-              )} */}
+              )}
             </>
           </div>
         </>

@@ -1,4 +1,5 @@
-@import "../../../styles/common";
+@use "../../../styles/common" as *;
+$proxima-nova: "proxima-nova" !important;
 
 // Common Styles
 @mixin flex-row {

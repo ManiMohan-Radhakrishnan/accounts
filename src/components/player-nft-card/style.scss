@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 
 .mynft-card-box {
   &.upgrade-card-box {

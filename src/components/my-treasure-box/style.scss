@@ -4,7 +4,7 @@
 //   padding: 6rem 0rem;
 //   position: relative;
 // }
-@import "../../styles/common";
+@use "../../styles/common" as *;
 
 // .win_box {
 //   max-width: 70rem;
@@ -21,25 +21,26 @@
   background-color: #fff;
   padding: 3rem 4rem;
 
-  @media screen  and (max-width:567px){
+  @media screen and (max-width: 567px) {
     padding: 1rem;
   }
   h4 {
     font-size: 2rem;
     margin-bottom: 1rem;
-    font-family: "proxima-nova"!important;
+    font-family: "proxima-nova" !important;
     font-weight: 600;
     text-align: center;
-    letter-spacing: .01em;
+    letter-spacing: 0.01em;
     color: #020f17;
     @media screen and (max-width: 450px) {
       padding: 1rem 0.5rem;
     }
   }
-  h3, h5 {
-    font-family: "proxima-nova"!important;
+  h3,
+  h5 {
+    font-family: "proxima-nova" !important;
     font-weight: 600;
-    letter-spacing: .08rem;
+    letter-spacing: 0.08rem;
     font-size: 1.1rem;
     line-height: 1.5;
     margin-bottom: 0.5rem;

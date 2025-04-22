@@ -95,7 +95,8 @@ const Accounts = () => {
     "guild-mynft",
     "guild-wallet",
     "guild-activity",
-    "treasure-box",
+    "treasure-box"
+    // "mini-game",
   ];
 
   if (!pages.includes(currentPage)) {
@@ -216,6 +217,9 @@ const Accounts = () => {
         {currentPage === "support" && <Support />}
         {currentPage === "referral" && <Referral />}
         {currentPage === "refer-earn-instruction" && <ReferEarnInstruction />}
+        {/* {currentPage === "mini-game" && (
+          <MiniGameSection hideMenus={hideMenus} />
+        )} */}
         {currentPage === "dashboard" && (
           <PrivateRoute component={DashBoardIndigg} />
         )}

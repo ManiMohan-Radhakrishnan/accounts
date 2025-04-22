@@ -60,7 +60,7 @@ const GlWalletCard = () => {
     <article className="grid-card">
       <div className="card-box wallet-card">
         <div className="card-header">
-          <h4>GuardianLink Wallet </h4>
+          <h4>JT Wallet </h4>
           <a onClick={() => history.push("/accounts/wallet")}>
             View More <HiExternalLink />
           </a>

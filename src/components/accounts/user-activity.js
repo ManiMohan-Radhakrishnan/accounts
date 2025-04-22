@@ -1,20 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import dayjs from "dayjs";
-import ContentLoader from "react-content-loader";
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
+
+import { userActivityApi } from "../../api/methods";
+
+import ContentLoader from "react-content-loader";
 
 import userImg from "../../images/user_1.png";
-import sampleNFT from "../../images/post1.png";
-import { userActivityApi } from "../../api/methods";
-import { currencyFormat, formattedNumber } from "../../utils/common";
-import "./_style.scss";
 
-// import { roundDown } from "../../utils/common";
-// import ToolTip from "../tooltip";
-// import { act } from "react-dom/test-utils";
+import "./_style.scss";
 
 const UserActivity = () => {
   const { user } = useSelector((state) => state.user.data);
@@ -81,7 +78,6 @@ const UserActivity = () => {
       const result = await userActivityApi(pgNo ? pgNo : page, filter_strings);
       setData(result.data.data.nfts);
       setHasMore(result.data.data.next_page);
-      setPage((page) => page + 1);
       setSelectedIndex(0);
       setInitLoading(false);
     } catch (error) {
@@ -91,24 +87,31 @@ const UserActivity = () => {
   };
 
   const fetchMore = () => {
-    fetchMoreList(page, filterReasons);
+    fetchMoreList({ pageNo: page + 1, filterReasons });
+    setPage(page + 1);
   };
 
-  const fetchMoreList = async (pgNo, filters) => {
+  useEffect(() => {
+    setPage(1);
+  }, [filterReasons]);
+
+  const fetchMoreList = async ({ pageNo, filterReasons }) => {
     try {
       if (!hasMore) {
         return;
       }
 
-      const filter_strings = filters
+      const filter_strings = filterReasons
         .filter((obj) => obj.checked)
         .map((obj) => obj.value);
 
-      setPage((page) => page + 1);
       setSelectedIndex(0);
 
       setLoading(true);
-      const result = await userActivityApi(pgNo ? pgNo : page, filter_strings);
+      const result = await userActivityApi(
+        pageNo ? pageNo : page,
+        filter_strings
+      );
       setData([...data, ...result.data.data.nfts]);
       setHasMore(result.data.data.next_page);
       setLoading(false);

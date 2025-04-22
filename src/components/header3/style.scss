@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 
 .head-title {
   font-family: $proxima-nova;
@@ -293,6 +293,9 @@
       50% {
         opacity: 0;
       }
+    }
+    &.batTypes {
+      min-width: 17rem !important;
     }
   }
 }

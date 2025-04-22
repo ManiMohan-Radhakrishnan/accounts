@@ -9,7 +9,7 @@ import { FiArrowLeft } from "react-icons/fi";
 import {
   cashfreeCreateOrder,
   cashfreeOrderStatus,
-  xena,
+  xena
 } from "./../../api/methods";
 import { currencyFormat, validateCurrency } from "./../../utils/common";
 
@@ -22,7 +22,7 @@ const CashFreePayment = ({
   setPageNo,
   getTransactionHistory,
   isFirstDeposit,
-  getDepositStat,
+  getDepositStat
 }) => {
   const { user } = useSelector((state) => state.user.data);
   const [error, setError] = useState();
@@ -67,7 +67,7 @@ const CashFreePayment = ({
         )} and maximum of ${currencyFormat(
           process.env.REACT_APP_CASHFREE_MAX_FUND,
           user.currency_name
-        )} to fund your GuardianLink wallet`
+        )} to fund your JT wallet`
       );
     }
   };
@@ -94,7 +94,7 @@ const CashFreePayment = ({
             ftd: isFirstDeposit ? 1 : 0,
             deposit_amt: amount,
             payment_type: "cashfree",
-            is_datas_present: "true",
+            is_datas_present: "true"
           });
         } else {
           xena({
@@ -103,7 +103,7 @@ const CashFreePayment = ({
             ftd: isFirstDeposit ? 1 : 0,
             deposit_amt: amount,
             payment_type: "cashfree",
-            is_datas_present: "false",
+            is_datas_present: "false"
           });
         }
 
@@ -153,7 +153,7 @@ const CashFreePayment = ({
       onSuccess: callbackSuccess,
       onFailure: callbackFailure,
       components: ["upi", "card", "order-details", "netbanking"],
-      style: { color: "#000" },
+      style: { color: "#000" }
     });
   };
 
@@ -226,7 +226,7 @@ const CashFreePayment = ({
             </button>
 
             <label className="loaded-info">
-              You need to fund your GuardianLink wallet with a minimum of $
+              You need to fund your JT wallet with a minimum of $
               {process.env.REACT_APP_CASHFREE_MIN_FUND}.
             </label>
           </div>

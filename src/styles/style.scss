@@ -1,4 +1,4 @@
-@import "./common";
+@use "./common" as *;
 
 // * {
 //   -webkit-transition: all 0.2s ease-in;
@@ -341,7 +341,6 @@ textarea {
   // -webkit-animation: AnimationName 3s ease infinite;
   // -moz-animation: AnimationName 3s ease infinite;
   // animation: AnimationName 3s ease infinite;
-
   animation-duration: 2s;
   background: linear-gradient(to right, #616060 0%, #ffffff 20%, #616060 100%);
 
@@ -1996,7 +1995,7 @@ input::-webkit-inner-spin-button {
   //   }
   // }
   .sub-sidenave-menu-list {
-    padding: 0 1rem;
+    padding: 0.6rem 1rem;
   }
 }
 
@@ -2020,5 +2019,29 @@ input::-webkit-inner-spin-button {
   40%,
   60% {
     transform: translate3d(4px, 0.1rem, 0) rotate(180deg);
+  }
+}
+
+.diamond_image {
+  width: 1rem !important;
+  height: 1rem !important;
+  object-fit: contain !important;
+  min-width: unset !important;
+  margin-bottom: 0 !important;
+  margin-right: 0.5rem;
+  background: transparent !important;
+  min-height: unset !important;
+  margin-right: 0.5rem !important;
+}
+
+.diamond_image_wm {
+  width: 1rem !important;
+  height: 1rem !important;
+  object-fit: contain !important;
+  min-width: unset !important;
+  margin-bottom: 0 !important;
+  &.size_ctrl {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
   }
 }

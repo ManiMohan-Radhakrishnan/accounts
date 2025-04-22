@@ -147,13 +147,12 @@ const CryptoDetails = ({ addFund, setAddFund }) => {
                     Please deposit <b>ONLY USDT</b> (US Dollar Tether),{" "}
                     <b>USDC</b>. In addition, MANDATORILY, make sure that the{" "}
                     <b>USDT</b> and the <b>USDC</b> you transfer is compliant
-                    with Ethereum's ERC-20, Polygon's ERC-20, or Binance Smart
-                    Chain (BSC)'s BEP-20 token standards, and the{" "}
-                    {/* <b>BUSD</b> is compliant with  */}
-                    Ethereum's ERC-20 or Binance Smart Chain (BSC)'s BEP-20
-                    token standards. Any other coin or any other non-compliant
-                    standard token transferred to the GuardianLink wallet will
-                    result in an irreversible and non-refundable loss of funds
+                    with Binance Smart Chain (BSC)'s BEP-20 token standards, and
+                    the {/* <b>BUSD</b> is compliant with  */}
+                    Binance Smart Chain (BSC)'s BEP-20 token standards. Any
+                    other coin or any other non-compliant standard token
+                    transferred to the JT wallet will result in an irreversible
+                    and non-refundable loss of funds
                   </li>
                   <li>
                     The minimum deposit amount is{" "}
@@ -163,15 +162,14 @@ const CryptoDetails = ({ addFund, setAddFund }) => {
                     recovered/refunded.
                   </li>
                   <li>
-                    The address only supports <b>USDT/USDC</b> (Ethereum
-                    ERC-20/Polygon ERC-20/BSC BEP-20). and
+                    The address only supports <b>USDT/USDC</b> (BSC BEP-20). and
                     {/* <b>BUSD</b>  */}
-                    (Ethereum ERC-20/BSC BEP-20), and no other
-                    coin/chain/standard. OMNI wallets are not supported.
+                    (BSC BEP-20), and no other coin/chain/standard. OMNI wallets
+                    are not supported.
                   </li>
                   <li>
                     When you make payments with cryptocurrency, you transact
-                    with Guardian Blockchain Labs Pte Ltd.
+                    with Jump Trade Blockchain Labs Pte Ltd.
                   </li>
                 </ol>
               </div>

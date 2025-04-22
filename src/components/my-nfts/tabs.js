@@ -61,21 +61,22 @@ export const Tabs = ({ hideMenus }) => {
   return (
     <div className="tabs">
       <ul className="tab-list">
-        {tabs?.map((tab, index) =>
-          hideMenus ? (
-            ![1, 3].includes(index) && (
-              <li className="nav-item" key={tab?.label}>
-                <span
-                  className={`nav-link ${activeTab === index ? "active" : ""}`}
-                  key={tab?.label}
-                  onClick={() => changeTab(index)}
-                >
-                  {tab?.label}{" "}
-                  {activeTab === index && count !== 0 && <span>({count})</span>}
-                </span>
-              </li>
-            )
-          ) : (
+        {
+          tabs?.map((tab, index) => (
+            // hideMenus ? (
+            //   ![1, 3].includes(index) && (
+            //     <li className="nav-item" key={tab?.label}>
+            //       <span
+            //         className={`nav-link ${activeTab === index ? "active" : ""}`}
+            //         key={tab?.label}
+            //         onClick={() => changeTab(index)}
+            //       >
+            //         {tab?.label}{" "}
+            //         {activeTab === index && count !== 0 && <span>({count})</span>}
+            //       </span>
+            //     </li>
+            //   )
+            // ) : (
             <li className="nav-item" key={tab?.label}>
               <span
                 className={`nav-link ${activeTab === index ? "active" : ""}`}
@@ -86,8 +87,9 @@ export const Tabs = ({ hideMenus }) => {
                 {activeTab === index && count !== 0 && <span>({count})</span>}
               </span>
             </li>
-          )
-        )}
+          ))
+          // )
+        }
       </ul>
       <div className="mynft-tab-content">
         <TabContent setActiveTab={setActiveTab} hideMenus={hideMenus} />

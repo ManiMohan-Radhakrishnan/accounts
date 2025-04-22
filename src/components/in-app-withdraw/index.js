@@ -61,7 +61,7 @@ const InAppWithdraw = ({
   });
   const [amount, setAmount] = useState("");
   const [receive, setReceive] = useState(0);
-  const [payMethod, setPayMethod] = useState("upi");
+  const [payMethod, setPayMethod] = useState("crypto");
   const [network, setNetwork] = useState(showNetworks[0]?.name || "binance");
 
   const [fees, setFees] = useState({
@@ -303,21 +303,15 @@ const InAppWithdraw = ({
         }
       } else {
         if (payMethod === "crypto") {
+          let minAmount = currencyFormat(fees.min_amount, user.currency_name);
           setError(
-            `Please enter the amount minimum of ${currencyFormat(
-              fees.min_amount,
-              user.currency_name
-            )}`
+            `Please enter the amount minimum of ${minAmount?.props?.children}`
           );
         } else {
+          let minAmount = currencyFormat(fees.min_amount, user.currency_name);
+          let maxAmount = currencyFormat(fees.max_amount, user.currency_name);
           setError(
-            `Please enter the amount minimum of ${currencyFormat(
-              fees.min_amount,
-              user.currency_name
-            )} and maximum of ${currencyFormat(
-              fees.max_amount,
-              user.currency_name
-            )} to withdraw from your wallet`
+            `Please enter the amount minimum of ${minAmount?.props?.children} and maximum of ${maxAmount?.props?.children} to withdraw from your wallet`
           );
         }
       }
@@ -492,19 +486,26 @@ const InAppWithdraw = ({
   // ];
 
   const checkNetworkData = () => {
-    let networks = new Array();
+    const formattedNetworks = showNetworks.map((item) => {
+      const feeCharge = feeCharges.find((obj) => obj?.network === item.name);
+      const fee = feeCharge
+        ? currencyFormat(feeCharge.fee, user.currency_name)
+        : "N/A";
 
-    for (let item of showNetworks) {
-      networks.push({
-        label: `${item?.display_name} -${currencyFormat(
-          feeCharges?.find((obj) => obj?.network === item.name)?.fee,
-          user.currency_name
-        )} Fee / Transaction`,
-        value: item?.name,
-      });
-    }
-    setNetwork(networks?.length > 0 ? networks[0]?.value : []);
-    setNetworkOptions(networks);
+      const displayName = item.display_name ?? "";
+      const value = item.name ?? "";
+
+      return {
+        label: `${displayName} - ${fee?.props?.children} Fee / Transaction`,
+        value: value,
+      };
+    });
+
+    const defaultNetwork =
+      formattedNetworks.length > 0 ? formattedNetworks[0].value : null;
+
+    setNetwork(defaultNetwork);
+    setNetworkOptions(formattedNetworks);
   };
 
   const codeTypeOptions = [
@@ -755,7 +756,7 @@ const InAppWithdraw = ({
                         />
                       </div>
                     </div> */}
-                    <div
+                    {/* <div
                       className={`w-mode ${
                         payMethod === "upi" ? "active" : ""
                       }`}
@@ -775,7 +776,7 @@ const InAppWithdraw = ({
                           size={17}
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   {payMethod === "crypto" && (
                     <p className="crypto-text">(Only USDT)</p>

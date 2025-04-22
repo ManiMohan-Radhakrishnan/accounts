@@ -35,7 +35,8 @@ export const user_login_thunk = (
   returnMessage,
   setOTP,
   setGoogleOTP,
-  setKey
+  setKey,
+  params
 ) => {
   return async (dispatch) => {
     try {
@@ -57,8 +58,9 @@ export const user_login_thunk = (
           setCookies(result.data.data.token);
 
           try {
-            const user = await userApi(result.data.data.token);
-
+            const user = await userApi(result.data.data.token, params);
+            if (user?.data?.data?.redirect_to)
+              window.open(user?.data?.data?.redirect_to, "blank");
             dispatch(user_login_action_success(user.data.data));
           } catch (u_err) {
             if (u_err?.status === 401) {
@@ -181,10 +183,12 @@ export const user_disable_mfa_thunk = (
   };
 };
 
-export const user_load_by_token_thunk = (token) => {
+export const user_load_by_token_thunk = (token, redirect) => {
   return async (dispatch) => {
     try {
-      const user = await userApi(token);
+      const user = await userApi(token, redirect);
+      if (user?.data?.data?.redirect_to)
+        window.open(user?.data?.data?.redirect_to, "_self");
       dispatch(user_login_action_success(user?.data?.data));
     } catch (err) {
       if (err?.status === 401) {

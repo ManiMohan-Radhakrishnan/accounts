@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 .inner-card-details {
   width: 70%;
   margin: auto;

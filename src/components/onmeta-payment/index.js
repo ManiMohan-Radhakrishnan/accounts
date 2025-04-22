@@ -16,7 +16,7 @@ const OnmetaPayment = ({ setAddFund, addFund }) => {
     apiKey: process.env.REACT_APP_ONMETA_KEY,
     userEmail: user?.email,
     walletAddress: user?.crypto_address,
-    environment: process.env.REACT_APP_ONMETA_ENVIRONMENT, // staging || production
+    environment: process.env.REACT_APP_ONMETA_ENVIRONMENT // staging || production
   });
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const OnmetaPayment = ({ setAddFund, addFund }) => {
 
         <div className="mt-5 mb-4 qr-terms border p-4 rounded-3">
           When you make payments using Onmeta, your payment is processed in
-          equivalent USD, and you transact with Guardian Blockchain Labs Pte
+          equivalent USD, and you transact with Jump Trade Blockchain Labs Pte
           Ltd.
         </div>
 

@@ -15,7 +15,7 @@ const PreOrderCard = ({
   quantity,
   reserveTime,
   onChange = () => {},
-  handleSubmit = () => {},
+  handleSubmit = () => {}
 }) => {
   const [total_qty, setTotalQty] = useState("");
 
@@ -119,7 +119,7 @@ const PreOrderCard = ({
                     <NFTCounter time={reserveTime} />
                   </div>
                   <div className="text-center exclusive">
-                    (Exclusive early access only for GuardianLink community
+                    (Exclusive early access only for Jump Trade community
                     members)
                   </div>
                 </>

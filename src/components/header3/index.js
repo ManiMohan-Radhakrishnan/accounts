@@ -8,26 +8,33 @@ import { FaDiscord } from "react-icons/fa";
 import { CgMenuRight } from "react-icons/cg";
 import { VscChromeClose } from "react-icons/vsc";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
 
 import {
   user_load_by_token_thunk,
   user_logout_thunk,
   market_live_thunk,
   market_live_off_thunk,
-  get_cart_list_thunk,
+  get_cart_list_thunk
 } from "../../redux/thunk/user_thunk";
 
 import { accountDetail } from "../../api/actioncable-methods";
-import { getNotificationApi, readNotificationApi } from "./../../api/methods";
+import {
+  getLudoToken,
+  getNotificationApi,
+  getTornadoGameLink,
+  readNotificationApi
+} from "./../../api/methods";
 import { getTransferNftMenu } from "../../api/methods-marketplace";
 
 import {
   currencyFormat,
   formattedNumber,
+  ludoAllowUserslugs,
   openWindow,
   openWindowBlank,
   roundDown,
-  withoutRound,
+  withoutRound
 } from "./../../utils/common";
 import { getCookies } from "../../utils/cookies";
 
@@ -96,6 +103,26 @@ const Header3 = ({ hideOptions = false }) => {
     }
   };
 
+  const handleTornadoGameLink = async () => {
+    try {
+      let token = await getTornadoGameLink();
+
+      if (token?.data?.data?.data) {
+        window.open(
+          `${
+            process.env.REACT_APP_TORNADO_GAME_LINK
+          }/?data=${encodeURIComponent(token?.data?.data?.data)}`,
+          "_blank"
+        );
+      }
+    } catch (err) {
+      console.log("🚀 ~ handleTornadoGameLink ~ err:", err);
+      toast.error(
+        "The request could not be processed at this time. Please try again."
+      );
+    }
+  };
+
   const handleTransferNftMenu = async () => {
     try {
       const result = await getTransferNftMenu();
@@ -145,9 +172,9 @@ const Header3 = ({ hideOptions = false }) => {
           ...notification,
           notifications: [
             ...notification.notifications,
-            ...result.data.data.notifications,
+            ...result.data.data.notifications
           ],
-          next_page: result.data.data.next_page,
+          next_page: result.data.data.next_page
         });
       }
     } catch (error) {
@@ -708,6 +735,18 @@ const Header3 = ({ hideOptions = false }) => {
     );
   };
 
+  const getGamelink = async () => {
+    try {
+      let response = await getLudoToken();
+      window.open(response?.data?.data?.game1?.url, "_blank");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        "The request could not be processed at this time. Please try again."
+      );
+    }
+  };
+
   return (
     <>
       <div style={{ display: "none" }}>
@@ -724,7 +763,7 @@ const Header3 = ({ hideOptions = false }) => {
               role="button"
               onClick={() => openWindow(process.env.REACT_APP_GUARDIAN_URL)}
             >
-              Powered by GuardianLink
+              Powered by Jump Trade
             </div> */}
             <img
               className="brand-logo"
@@ -739,7 +778,7 @@ const Header3 = ({ hideOptions = false }) => {
               href="https://www.guardianlink.io/"
               target="_blank"
             >
-              <span>|</span> A GuardianLink Brand
+              <span>|</span> A Jump Trade Brand
             </a> */}
           </Navbar.Brand>
           {!hideOptions && (
@@ -759,6 +798,35 @@ const Header3 = ({ hideOptions = false }) => {
                       </div>
                     </Nav.Link> */}
 
+                    <Nav.Link className="css-5cmxo2 me-3" id="drop_outer">
+                      <div
+                        className=" text-lower"
+                        role="button"
+                        onClick={handleTornadoGameLink}
+                      >
+                        {/* <span className="blink_contest"> */}
+                        Tornado
+                        {/* <span className="new-badge">new</span>
+                        </span> */}
+                      </div>
+                    </Nav.Link>
+                    {/* {ludoAllowUserslugs?.includes(
+                      state?.user?.data?.user?.slug
+                    ) && ( */}
+                    <Nav.Link className="css-5cmxo2 me-3" id="drop_outer">
+                      <div
+                        className=" text-lower"
+                        role="button"
+                        onClick={getGamelink}
+                      >
+                        <span className="blink_contest">
+                          Ludo
+                          <span className="new-badge">new</span>
+                        </span>
+                      </div>
+                    </Nav.Link>
+                    {/* // )} */}
+
                     <Dropdown autoClose={["inside", "outside"]}>
                       <Dropdown.Toggle
                         align="start"
@@ -771,15 +839,56 @@ const Header3 = ({ hideOptions = false }) => {
                           as="button"
                           onClick={() =>
                             window.open(
-                              `${process.env.REACT_APP_MARKETPLACE_URL}/drop/tornado/tornado-pass`,
+                              `${process.env.REACT_APP_MARKETPLACE_URL}/drop/ludo-master-nfts`,
                               "_blank"
                             )
                           }
                         >
                           <span className="blink_contest">
-                            Tornado Master NFTs{" "}
-                            <span className="new-badge">new</span>
+                            Ludo NFTs <span className="new-badge">new</span>
                           </span>
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          as="button"
+                          onClick={() =>
+                            window.open(
+                              `${process.env.REACT_APP_MARKETPLACE_URL}/drop/carrom-nfts`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          {/* <span className="blink_contest"> */}
+                          Carrom NFTs
+                          {/* <span className="new-badge">new</span> */}
+                          {/* </span> */}
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          as="button"
+                          onClick={() =>
+                            window.open(
+                              `${process.env.REACT_APP_MARKETPLACE_URL}/drop/rss/rss-pass`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          {/* <span className="blink_contest"> */}
+                          Racing Super Star Pass NFTs{" "}
+                          {/* <span className="new-badge">new</span>
+                          </span> */}
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          as="button"
+                          onClick={() =>
+                            window.open(
+                              `${process.env.REACT_APP_MARKETPLACE_URL}/drop/tornado/tornado-pass`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          {/* <span className="blink_contest"> */}
+                          Tornado Master NFTs{" "}
+                          {/* <span className="new-badge">new</span> */}
+                          {/* </span> */}
                         </Dropdown.Item>
                         <Dropdown.Item
                           as="button"
@@ -945,7 +1054,7 @@ const Header3 = ({ hideOptions = false }) => {
                     </Dropdown>
                     <Nav.Link className="css-5cmxo2 me-3" id="drop_outer">
                       <div
-                        className="pre-btn text-lower"
+                        className="text-lower"
                         role="button"
                         onClick={() =>
                           window.open(
@@ -954,9 +1063,10 @@ const Header3 = ({ hideOptions = false }) => {
                           )
                         }
                       >
-                        <span className="blink_contest">
-                          Callit <span className="new-badge">new</span>
-                        </span>
+                        {/* <span className="blink_contest"> */}
+                        Callit
+                        {/* <span className="new-badge">new</span>
+                        </span> */}
                       </div>
                     </Nav.Link>
                     {/* <Nav.Link className="css-5cmxo2 me-3" id="drop_outer">
@@ -1248,7 +1358,7 @@ const Header3 = ({ hideOptions = false }) => {
                               as="button"
                               onClick={() => history.push("/accounts/wallet")}
                             >
-                              GuardianLink Wallet
+                              JT Wallet
                             </Dropdown.Item>
                             <Dropdown.Item
                               as="button"
@@ -1309,6 +1419,22 @@ const Header3 = ({ hideOptions = false }) => {
                             </Dropdown.Item>
                             <Dropdown.Item
                               as="button"
+                              onClick={() =>
+                                history.push("/accounts/fusor-history")
+                              }
+                            >
+                              Fusion History
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() =>
+                                history.push("/accounts/burn-history")
+                              }
+                            >
+                              Burn History
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              as="button"
                               onClick={() => history.push("/accounts/settings")}
                             >
                               Security Settings
@@ -1357,7 +1483,7 @@ const Header3 = ({ hideOptions = false }) => {
                               as="button"
                               onClick={() => history.push("/accounts/wallet")}
                             >
-                              GuardianLink Wallet
+                              JT Wallet
                             </Dropdown.Item>
 
                             <Dropdown.Item
@@ -1453,10 +1579,10 @@ const Header3 = ({ hideOptions = false }) => {
                       window.open("https://pro.jump.trade/", "_blank")
                     }
                   >
-                    <span className={"blink_contest"}>
-                      d'Marketplace
-                      <span className="new-badge">new</span>
-                    </span>
+                    {/* <span className={"blink_contest"}> */}
+                    d'Marketplace
+                    {/* <span className="new-badge">new</span>
+                    </span> */}
                   </Dropdown.Item>
                   <Dropdown.Item
                     className="show_mobile"
@@ -1467,17 +1593,46 @@ const Header3 = ({ hideOptions = false }) => {
                       )
                     }
                   >
+                    {/* <span className={"blink_contest"}> */}
+                    Callit
+                    {/* <span className="new-badge">new</span>
+                    </span> */}
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className="show_mobile"
+                    href={`${process.env.REACT_APP_MARKETPLACE_URL}/drop/ludo-master-nfts`}
+                  >
                     <span className={"blink_contest"}>
-                      Callit <span className="new-badge">new</span>
+                      Ludo NFTs
+                      <span className="new-badge">new</span>
                     </span>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className="show_mobile"
+                    href={`${process.env.REACT_APP_MARKETPLACE_URL}/drop/carrom-nfts`}
+                  >
+                    {/* <span className={"blink_contest"}> */}
+                    Carrom NFTs
+                    {/* <span className="new-badge">new</span>
+                    </span> */}
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className="show_mobile"
+                    href={`${process.env.REACT_APP_MARKETPLACE_URL}/drop/rss/rss-pass`}
+                  >
+                    {/* <span className={"blink_contest"}> */}
+                    Racing Super Star Pass NFTs{" "}
+                    {/* <span className="new-badge">new</span>
+                    </span> */}
                   </Dropdown.Item>
                   <Dropdown.Item
                     className="show_mobile"
                     href={`${process.env.REACT_APP_MARKETPLACE_URL}/drop/tornado/tornado-pass`}
                   >
-                    <span className={"blink_contest"}>
-                      Tornado Master NFTs <span className="new-badge">new</span>
-                    </span>
+                    {/* <span className={"blink_contest"}> */}
+                    Tornado Master NFTs
+                    {/* <span className="new-badge">new</span>
+                    </span> */}
                   </Dropdown.Item>
                   <Dropdown.Item
                     className="show_mobile"

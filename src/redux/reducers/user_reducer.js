@@ -23,6 +23,7 @@ import {
   USER_PAN_MISMATCH_ERROR,
   USER_PAN_NAME,
   UPI_ID_DISABLED,
+  MINI_GAME_INFO,
 } from "./../actions/user_action";
 
 const initState = {
@@ -44,6 +45,7 @@ const initState = {
   panMismatchError: "",
   userPanName: "",
   upiIdDisabledMode: false,
+  miniGameDetails: [],
 };
 
 const user_reducer = (state = initState, { payload, type }) => {
@@ -145,6 +147,9 @@ const user_reducer = (state = initState, { payload, type }) => {
   }
   if (type === UPI_ID_DISABLED) {
     state = { ...state, upiIdDisabledMode: payload };
+  }
+  if (type === MINI_GAME_INFO) {
+    state = { ...state, miniGameDetails: payload };
   }
   return state;
 };

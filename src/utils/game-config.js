@@ -3,4 +3,8 @@ export const GAMES = Object.freeze({
   RADDX: "raddx",
   HURLEY: "hurley",
   MINI: "tornado",
+  SONY: "hedera",
+  RACINGSUPERSTAR: "racing",
+  CARROM: "carrom",
+  LUDO: "ludo",
 });

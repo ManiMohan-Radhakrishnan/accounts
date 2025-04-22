@@ -1,11 +1,12 @@
-@import "../../../styles/common";
+@use "../../../styles/common" as *;
 
 .pop-body-container-burnBatNftHistory {
-  position: relative;
+  // position: relative;
   .pop-nft-details-burnBatNftHistory {
     position: relative;
     // max-height: calc(100vh - 8rem);
-    max-height: calc(100vh - 6rem);
+    // max-height: calc(100vh - 6rem);
+    max-height: 100vh;
     overflow: hidden;
 
     .pop-head-content-burnBatNftHistory {
@@ -245,9 +246,12 @@
         }
       }
       .burn-hint {
-        margin: 2rem 0 0;
-        padding: 1rem 0;
+        // margin: 2rem 0 0;
+        padding: 0 0 1rem;
         text-align: justify;
+        > p {
+          font-size: 1.1rem;
+        }
         ul {
           padding: 1rem;
           background: #f3f3f3;
@@ -258,9 +262,13 @@
           }
         }
       }
+      .error-txt {
+        color: red;
+        text-align: center;
+      }
     }
     .burnBat-popup-wrapper {
-      height: calc(100vh - 10rem);
+      height: calc(100vh - 5.5rem);
       overflow-y: auto;
       display: flex;
       justify-content: center;
@@ -281,21 +289,21 @@
 }
 
 .sticky-bottom-box {
-  position: sticky;
-  top: 100%;
-  width: 100%;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 1rem;
-  .hint {
-    text-align: center;
-    line-height: 1.4;
-    margin: 0.2rem 0 0;
-  }
+  // position: sticky;
+  // top: 100%;
+  // width: 100%;
+  // left: 0;
+  // right: 0;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // flex-direction: column;
+  // padding: 1rem;
+  // .hint {
+  //   text-align: center;
+  //   line-height: 1.4;
+  //   margin: 0.2rem 0 0;
+  // }
   .confirmation_button {
     .btn-dark {
       &.secondary {
@@ -313,9 +321,6 @@
       font-size: 1rem;
       line-height: 1.6rem;
     }
-  }
-  .error-txt {
-    color: red;
   }
 }
 

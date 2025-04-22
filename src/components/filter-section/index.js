@@ -473,6 +473,7 @@ const FilterSection = ({
                 as="button"
                 color={"#000"}
                 onClick={() => handleFilter(obj, "bat_types")}
+                className="batTypes"
               >
                 <FaCheckCircle
                   fill={obj.checked ? "#F47411" : "#ccc"}

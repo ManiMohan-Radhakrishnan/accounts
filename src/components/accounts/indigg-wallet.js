@@ -7,7 +7,7 @@ import {
   Modal,
   Dropdown,
   Popover,
-  OverlayTrigger,
+  OverlayTrigger
 } from "react-bootstrap";
 import { useLocation } from "react-router";
 import { toast } from "react-toastify";
@@ -48,7 +48,7 @@ import {
   getUserRewardBalance,
   moveTreasureBalance,
   moveRedeem,
-  getUTCoinsList,
+  getUTCoinsList
 } from "./../../api/methods";
 import { userActivityYieldsApi } from "../../api/methods-marketplace";
 import { currencyFormat } from "../../utils/common";
@@ -69,7 +69,7 @@ const IndiggWallet = () => {
 
   const [addFund, setAddFund] = useState({
     show: false,
-    type: "",
+    type: ""
   });
 
   const [tranType, setTranType] = useState("trans");
@@ -78,7 +78,7 @@ const IndiggWallet = () => {
     show: false,
     type: "",
     balance: 0,
-    fee: {},
+    fee: {}
   });
 
   const [showLocked, setShowLocked] = useState();
@@ -278,7 +278,7 @@ const IndiggWallet = () => {
     trade_withdraw_details = null,
     _setError,
     _setLoading,
-    _setSuccess,
+    _setSuccess
   }) => {
     try {
       _setError(null);
@@ -288,7 +288,7 @@ const IndiggWallet = () => {
         amount: amount,
         address: address,
         network: network,
-        trade_withdraw_details: trade_withdraw_details,
+        trade_withdraw_details: trade_withdraw_details
       });
       _setLoading(false);
 
@@ -534,9 +534,7 @@ const IndiggWallet = () => {
                     <div className="row align-items-center">
                       <div className="col-lg-12">
                         <div className="username_flex_box">
-                          <h3 className="wallet-title">
-                            My GuardianLink Wallet
-                          </h3>
+                          <h3 className="wallet-title">My JT Wallet</h3>
                           {/* <div className="deposit_funds">
                           {user.deposit_locked ? (
                             <OverlayTrigger
@@ -1113,7 +1111,7 @@ const IndiggWallet = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Deposit Funds to My GuardianLink Wallet {getPayTitle()}
+            Deposit Funds to My JT Wallet {getPayTitle()}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="card-modal">
@@ -1258,7 +1256,7 @@ const IndiggWallet = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Withdraw Funds from My GuardianLink Wallet {getWithdrawTitle()}
+            Withdraw Funds from My JT Wallet {getWithdrawTitle()}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="card-modal">
@@ -1298,7 +1296,7 @@ const IndiggWallet = () => {
                             ...withdrawFund,
                             type,
                             balance,
-                            fee,
+                            fee
                           })
                         }
                       />

@@ -40,5 +40,7 @@
 
   "land_icon": "https://cdn.guardianlink.io/product-hotspot/images/raddx/Land_Icon.png",
   "building_icon": "https://cdn.guardianlink.io/product-hotspot/images/raddx/Building_Icon.png",
-  "ball_image": "https://cdn.guardianlink.io/product-hotspot/images/jumptrade/Cricket-ball.webp"
+  "ball_image": "https://cdn.guardianlink.io/product-hotspot/images/jumptrade/Cricket-ball.webp",
+  "gems_icon": "https://cdn.guardianlink.io/product-hotspot/images/jtcdn/gem.png",
+  "jt_logo": "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade-logo.svg"
 }

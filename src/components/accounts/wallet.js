@@ -7,7 +7,7 @@ import {
   Modal,
   Dropdown,
   Popover,
-  OverlayTrigger,
+  OverlayTrigger
 } from "react-bootstrap";
 import { useLocation } from "react-router";
 import { toast } from "react-toastify";
@@ -30,7 +30,7 @@ import {
   whitelistedUpiList,
   whitelistedCryptoList,
   getUserReferralSummary,
-  offlinePaymentsCancel,
+  offlinePaymentsCancel
 } from "./../../api/methods";
 import { userActivityYieldsApi } from "../../api/methods-marketplace";
 import { user_load_by_token_thunk } from "../../redux/thunk/user_thunk";
@@ -61,7 +61,7 @@ import PaymentMethodListWithdraw from "../payment-method-list/withdraw";
 import {
   currencyFormat,
   EVENT_NAMES,
-  invokeTrackEvent,
+  invokeTrackEvent
 } from "../../utils/common";
 
 import utCoin from "../../images/coin.png";
@@ -101,7 +101,7 @@ const Wallet = () => {
 
   const [addFund, setAddFund] = useState({
     show: false,
-    type: "",
+    type: ""
   });
 
   const [tranType, setTranType] = useState("trans");
@@ -110,7 +110,7 @@ const Wallet = () => {
     show: false,
     type: "",
     balance: 0,
-    fee: {},
+    fee: {}
   });
 
   const [showLocked, setShowLocked] = useState();
@@ -154,6 +154,10 @@ const Wallet = () => {
   const IsType = query.get("depositType");
   const Ispath = query.get("path");
 
+  const [depositDisable, setDepositDisable] = useState(false);
+  const [disableMessage, setDisableMessage] = useState("");
+  const [disableLoading, setDisableLoading] = useState(false);
+
   useEffect(() => {
     invokeTrackEvent(EVENT_NAMES?.GUARDIANLINK_WALLET_VIEWED, {
       "Fiat Balance":
@@ -186,7 +190,7 @@ const Wallet = () => {
       "Reward Hold":
         user?.reward_point_locked >= 0
           ? parseFloat(user?.reward_point_locked)
-          : null,
+          : null
     });
 
     let depositType = query.get("depositType");
@@ -203,13 +207,13 @@ const Wallet = () => {
     depositType &&
       setAddFund({
         show: true,
-        type: depositType,
+        type: depositType
       });
     callIt &&
       Isdeposit &&
       setAddFund({
         show: true,
-        type: "",
+        type: ""
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -437,7 +441,7 @@ const Wallet = () => {
     _setError,
     _setLoading,
     _setSuccess,
-    wallet_type = "common",
+    wallet_type = "common"
   }) => {
     try {
       _setError(null);
@@ -449,7 +453,7 @@ const Wallet = () => {
         address: address,
         network: network,
         trade_withdraw_details: trade_withdraw_details,
-        wallet_type,
+        wallet_type
       });
       _setLoading(false);
 
@@ -715,6 +719,12 @@ const Wallet = () => {
     }
   };
 
+  useEffect(() => {
+    if (disableMessage && !disableLoading) {
+      toast.error(disableMessage);
+    }
+  }, [disableMessage, disableLoading]);
+
   return (
     <>
       <div className="main-content-block">
@@ -727,7 +737,7 @@ const Wallet = () => {
                     <div className="row align-items-center">
                       <div className="col-lg-12">
                         <div className="username_flex_box">
-                          <h3 className="wallet-title">GuardianLink Wallet</h3>
+                          <h3 className="wallet-title">JT Wallet</h3>
                           <div className="deposit_funds">
                             {user.deposit_locked ? (
                               <OverlayTrigger
@@ -1333,7 +1343,7 @@ const Wallet = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Deposit Funds to My GuardianLink Wallet {getPayTitle()}
+            Deposit Funds to My JT Wallet {getPayTitle()}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="card-modal">
@@ -1357,7 +1367,7 @@ const Wallet = () => {
                     handleSelectedPay={(data) => {
                       setAddFund({ ...addFund, type: data });
                       invokeTrackEvent(EVENT_NAMES?.WALLET_DEPOSIT_INITIATED, {
-                        payment_method: data,
+                        payment_method: data
                       });
                     }}
                   />
@@ -1495,12 +1505,16 @@ const Wallet = () => {
                     );
                   }
 
-                  if (addFund.type === "upi") {
+                  if (addFund.type === "upi" && !disableLoading) {
                     return (
                       <UpiPayment
                         addFund={addFund}
                         setAddFund={setAddFund}
                         getDepositStat={handleDepositAlert}
+                        setDepositDisable={setDepositDisable}
+                        depositDisable={depositDisable}
+                        setDisableLoading={setDisableLoading}
+                        setDisableMessage={setDisableMessage}
                       />
                     );
                   }
@@ -1525,7 +1539,7 @@ const Wallet = () => {
         <Modal.Header closeButton>
           <Modal.Title>
             {withDrawTitle === "Gl_wallet"
-              ? `Withdraw Funds from My GuardianLink Wallet ${getWithdrawTitle()}`
+              ? `Withdraw Funds from My JT Wallet ${getWithdrawTitle()}`
               : `Withdraw Funds from My Play Wallet`}
           </Modal.Title>
         </Modal.Header>
@@ -1573,14 +1587,14 @@ const Wallet = () => {
                             ...withdrawFund,
                             type,
                             balance,
-                            fee,
+                            fee
                           });
                           invokeTrackEvent(
                             EVENT_NAMES?.WALLET_WITHDRAW_INITIATED,
                             {
                               payment_method: type,
                               balance: balance ? parseFloat(balance) : null,
-                              fees: fee,
+                              fees: fee
                             }
                           );
                         }}

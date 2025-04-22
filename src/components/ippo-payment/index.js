@@ -17,7 +17,7 @@ const IppoPayment = ({
   setPageNo,
   getTransactionHistory,
   isFirstDeposit,
-  getDepositStat,
+  getDepositStat
 }) => {
   const { user } = useSelector((state) => state.user.data);
   const [error, setError] = useState();
@@ -31,7 +31,7 @@ const IppoPayment = ({
   const [ippo, setIppo] = useState({
     ippopayOpen: false,
     order_id: "",
-    public_key: process.env.REACT_APP_IPPO_KEY,
+    public_key: process.env.REACT_APP_IPPO_KEY
   });
 
   useEffect(() => {
@@ -104,7 +104,7 @@ const IppoPayment = ({
               deposit_amt: amount,
               txid: input?.order_id,
               payment_type: "ippopay",
-              is_datas_present: "true",
+              is_datas_present: "true"
             });
           } else {
             xena({
@@ -114,7 +114,7 @@ const IppoPayment = ({
               deposit_amt: amount,
               txid: input?.order_id,
               payment_type: "ippopay",
-              is_datas_present: "false",
+              is_datas_present: "false"
             });
           }
         } else {
@@ -167,7 +167,7 @@ const IppoPayment = ({
         )} and maximum of ${currencyFormat(
           process.env.REACT_APP_IPPO_MAX_FUND,
           user.currency_name
-        )} to fund your GuardianLink wallet`
+        )} to fund your JT wallet`
       );
     }
   };
@@ -264,7 +264,7 @@ const IppoPayment = ({
             </label>
           )} */}
             <label className="loaded-info">
-              You need to fund your GuardianLink wallet with a minimum of $
+              You need to fund your JT wallet with a minimum of $
               {process.env.REACT_APP_IPPO_MIN_FUND}.
             </label>
           </div>

@@ -80,6 +80,7 @@ const BurnNFTDetail = ({
 
   const handleCheckboxChange = () => {
     setAccepted(!accepted);
+    setError("");
   };
   useEffect(() => {
     checkNetworkData();
@@ -192,7 +193,7 @@ const BurnNFTDetail = ({
       if (cryptoList?.[network]?.length > 0) {
         let pushItems = [];
         setSelectPaymentNetwork(cryptoList?.[network]);
-        setAddress(cryptoList?.[network][0]?.payment_id);
+        // setAddress(cryptoList?.[network][0]?.payment_id);
         setPaymentSlug(cryptoList?.[network][0]?.slug);
         cryptoList?.[network].map((item) => {
           let modifyData = {
@@ -481,33 +482,30 @@ const BurnNFTDetail = ({
                       and time of the burn event will be announced separately.
                     </li> */}
                   </ul>
-                  <p>
-                    <input
-                      type="checkbox"
-                      checked={accepted}
-                      onChange={handleCheckboxChange}
-                    />{" "}
-                    By clicking on <b>"Submit"</b>, you acknowledge that you
-                    have read and understood the information provided above. If
-                    you have any doubts or questions, we strongly recommend
-                    reaching out to our support team before making your final
-                    decision.
-                  </p>
                 </h5>
+                <p>
+                  <input
+                    type="checkbox"
+                    checked={accepted}
+                    onChange={handleCheckboxChange}
+                  />{" "}
+                  By clicking on <b>"Submit"</b>, you acknowledge that you have
+                  read and understood the information provided above. If you
+                  have any doubts or questions, we strongly recommend reaching
+                  out to our support team before making your final decision.
+                </p>
+                {error && <p className="error-txt">{error}</p>}
+                <div className="w-100 pb-4">
+                  <button
+                    disabled={loading || !accepted}
+                    onClick={() => handleBurnInitiate(burnBatDetails?.slug)}
+                    className="btn btn-dark w-100"
+                    type="button"
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="sticky-bottom-box">
-            {error && <p className="error-txt">{error}</p>}
-            <div className="w-100">
-              <button
-                disabled={loading || !accepted}
-                onClick={() => handleBurnInitiate(burnBatDetails?.slug)}
-                className="btn btn-dark w-100"
-                type="button"
-              >
-                Submit
-              </button>
             </div>
           </div>
         </>

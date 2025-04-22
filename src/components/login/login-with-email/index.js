@@ -16,12 +16,12 @@ import InputOTP from "../../input-otp";
 import {
   user_load_by_token_thunk,
   user_login_reset_thunk,
-  user_login_thunk,
+  user_login_thunk
 } from "../../../redux/thunk/user_thunk";
 import {
   openWindowBlank,
   passwordLength,
-  validateEmail,
+  validateEmail
 } from "../../../utils/common";
 import { useQuery } from "../../../hooks/url-params";
 import { getCookies, setCookies } from "../../../utils/cookies";
@@ -30,11 +30,12 @@ import {
   resendConfirmationApi,
   resendOtpApi,
   verifyOtpApi,
-  verifyGoogleOtpApi,
+  verifyGoogleOtpApi
 } from "../../../api/methods";
 
 import GoogleLogin from "../../social-login/google-login";
 import FacebookLogin from "../../social-login/facebook-login";
+import images from "../../../../src/utils/raddx-images.json";
 
 import "./../style.scss";
 
@@ -45,6 +46,7 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
   const location = useLocation();
   const query = useQuery(location.search);
   const redirect = query.get("redirect");
+  const gameRedirect = query.get("from_game");
   const email = query.get("email");
   const [googleOTP, setGoogleOTP] = useState(false);
   const [password, setPassword] = useState(true);
@@ -60,7 +62,7 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
 
   const [login, setLogin] = useState({
     email: "",
-    password: "",
+    password: ""
   });
 
   const [validation, setValidation] = useState({
@@ -68,7 +70,7 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
     valid_email: false,
     password: false,
     valid_password: false,
-    captcha: false,
+    captcha: false
   });
 
   useEffect(() => {
@@ -90,7 +92,7 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
     if (email) {
       setLogin({ ...login, email: decodeURIComponent(email.trim()) });
       setAlreadyExist(
-        "We noticed that your email is already associated with a GuardianLink ID. Please proceed with your login credentials."
+        "We noticed that your email is already associated with a Jump Trade ID. Please proceed with your login credentials."
       );
       history.replace("/signin");
     }
@@ -106,7 +108,16 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
     setError(null);
     if (checkValidation()) {
       // dispatch(user_login_thunk(login, setError, setOTP));
-      dispatch(user_login_thunk(login, setError, setOTP, setGoogleOTP, setKey));
+      dispatch(
+        user_login_thunk(
+          login,
+          setError,
+          setOTP,
+          setGoogleOTP,
+          setKey,
+          gameRedirect
+        )
+      );
     }
   };
 
@@ -219,20 +230,24 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
           setCookies(result.data.data.token);
           setVerifyLoading(false);
           setNavigate(true);
-          dispatch(user_load_by_token_thunk(result.data.data.token));
+          dispatch(
+            user_load_by_token_thunk(result.data.data.token, gameRedirect)
+          );
         } else {
           //google auth api based call
           const payload = {
             otp_code: otpValue,
             secret_key: key,
-            email: login.email,
+            email: login.email
           };
 
           const result = await verifyGoogleOtpApi(payload);
           setCookies(result.data.data.token);
           setVerifyLoading(false);
           setNavigate(true);
-          dispatch(user_load_by_token_thunk(result.data.data.token));
+          dispatch(
+            user_load_by_token_thunk(result.data.data.token, gameRedirect)
+          );
         }
       } catch (error) {
         setVerifyLoading(false);
@@ -293,18 +308,18 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
                   <ToolTip
                     icon={
                       <img
-                        src={guardian_logo}
+                        src={images.jt_logo}
                         role="button"
-                        onClick={() =>
-                          openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                        }
+                        // onClick={() =>
+                        //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                        // }
                       />
                     }
                     content={
                       <>
-                        Your GuardianLink ID gives access to all NFT drops,
-                        marketplaces, &amp; other platforms powered by
-                        GuardianLink.
+                        Your Jump Trade ID gives access to all NFT drops,
+                        marketplaces, &amp; other platforms powered by Jump
+                        Trade.
                       </>
                     }
                     placement="top"
@@ -399,18 +414,18 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
                   <ToolTip
                     icon={
                       <img
-                        src={guardian_logo}
+                        src={images.jt_logo}
                         role="button"
-                        onClick={() =>
-                          openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                        }
+                        // onClick={() =>
+                        //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                        // }
                       />
                     }
                     content={
                       <>
-                        Your GuardianLink ID gives access to all NFT drops,
-                        marketplaces, &amp; other platforms powered by
-                        GuardianLink.
+                        Your Jump Trade ID gives access to all NFT drops,
+                        marketplaces, &amp; other platforms powered by Jump
+                        Trade.
                       </>
                     }
                     placement="top"
@@ -558,7 +573,7 @@ const LoginWithEmailComponent = ({ currentPage, setcurrentPage }) => {
                   href={process.env.REACT_APP_GUARDIAN_HELP_URL}
                   target="_blank"
                 >
-                  Why do you need a GuardianLink account?
+                  Why do you need a Jump Trade account?
                 </a>
               </p> */}
             </div>

@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 .bl_signup_wrapper {
   min-height: 100vh;
   position: relative;

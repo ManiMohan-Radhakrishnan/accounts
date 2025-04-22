@@ -36,7 +36,7 @@ import {
   isPossiblePhoneNumber,
   isValidPhoneNumber,
   validatePhoneNumberLength,
-  findPhoneNumbersInText,
+  findPhoneNumbersInText
 } from "libphonenumber-js";
 import JSEncrypt from "jsencrypt";
 import { useEffect } from "react";
@@ -209,64 +209,64 @@ export const crispStyle = {
     fontWeight: "bolder",
     borderColor: "#9c9c9b",
     "&:hover": {
-      borderColor: "#9c9c9b",
+      borderColor: "#9c9c9b"
     },
     "&:focus": {
-      boxShadow: "0 0 0 0.25rem #0d6efd40",
-    },
+      boxShadow: "0 0 0 0.25rem #0d6efd40"
+    }
   }),
   input: (prop) => ({
     ...prop,
     margin: 0,
-    padding: 0,
+    padding: 0
   }),
   valueContainer: (prop) => ({
     ...prop,
     margin: 0,
-    padding: 0,
+    padding: 0
   }),
   singleValue: (styles, { data }) => ({
     ...styles,
     margin: 0,
     padding: 0,
-    ...(data.color ? dot(data.color) : {}),
+    ...(data.color ? dot(data.color) : {})
   }),
 
   dropdownIndicator: (prop) => ({
     ...prop,
     margin: 0,
-    padding: "0 3px 0 0",
+    padding: "0 3px 0 0"
   }),
   indicatorsContainer: (prop) => ({
     ...prop,
     margin: 0,
-    padding: 0,
+    padding: 0
   }),
   clearIndicator: (prop) => ({
     ...prop,
     margin: 0,
-    padding: 0,
+    padding: 0
   }),
   indicatorSeparator: (prop) => ({
     ...prop,
     margin: "3px",
-    padding: 0,
+    padding: 0
   }),
   noOptionsMessage: (prop) => ({
     ...prop,
     padding: 0,
-    fontSize: "12px",
+    fontSize: "12px"
   }),
   option: (prop) => ({
     ...prop,
     padding: "8px",
-    fontSize: "12px",
+    fontSize: "12px"
   }),
   menu: (prop) => ({
     ...prop,
-    borderRadius: "3px",
+    borderRadius: "3px"
   }),
-  menuPortal: (base) => ({ ...base, zIndex: 9999, top: base.top - 5 }),
+  menuPortal: (base) => ({ ...base, zIndex: 9999, top: base.top - 5 })
 };
 
 export const dot = (color = "#ccc") => ({
@@ -280,8 +280,8 @@ export const dot = (color = "#ccc") => ({
     display: "block",
     marginRight: 8,
     height: 10,
-    width: 10,
-  },
+    width: 10
+  }
 });
 
 export const validInternationalPhone = (input, country) => {
@@ -297,7 +297,7 @@ export const validateInternationalPhoneV2 = (phoneNumberInfo = {}) => {
     phone_no = "",
     phone_no_format = "",
     phone_no_dial_code = "",
-    formatted_phone_no = "",
+    formatted_phone_no = ""
   } = phoneNumberInfo;
   if (
     formatted_phone_no.length > 0 &&
@@ -309,18 +309,115 @@ export const validateInternationalPhoneV2 = (phoneNumberInfo = {}) => {
   else return false;
 };
 
-export const currencyFormat = (value, type = "usd") => {
-  let formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: type,
-  });
-  return formatter.format(parseFloat(value ? value : 0));
+// export const currencyFormat = (value, type = "usd") => {
+//   let formatter = new Intl.NumberFormat("en-US", {
+//     style: "currency",
+//     currency: type,
+//   });
+//   return formatter.format(parseFloat(value ? value : 0));
+// };
+
+export const currencyFormat = (
+  value = 0,
+  type = "usd",
+  fixedDecimalPoint = 2,
+  gemClassName = false
+) => {
+  let currencyValue = parseFloat(value);
+  if (isNaN(currencyValue)) return;
+  return (
+    <>
+      {type?.toLowerCase() === "usd" ? (
+        "$" +
+        currencyValue
+          .toFixed(fixedDecimalPoint)
+          .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+      ) : type?.toLowerCase() === "gem" &&
+        process.env.REACT_APP_GEM_ENV === "staging" ? (
+        <>
+          <img
+            unoptimized={true}
+            width="300"
+            height="300"
+            loading="eager"
+            src={raddx_images.gems_icon}
+            alt="Player-type"
+            priority={true}
+            placeholder={"blur"}
+            className={`${"diamond_image_wm"} ${
+              gemClassName ? "size_ctrl" : ""
+            }`}
+            // blurDataURL={"/sample.gif"}
+          />
+        </>
+      ) : type?.toLowerCase() === "gem" &&
+        process.env.REACT_APP_GEM_ENV === "prod" ? (
+        "$"
+      ) : process.env.REACT_APP_GEM_ENV === "staging" ? (
+        <>
+          <img
+            unoptimized={true}
+            width="300"
+            height="300"
+            loading="eager"
+            src={raddx_images.gems_icon}
+            alt="Player-type"
+            priority={true}
+            placeholder={"blur"}
+            className="diamond_image"
+            // blurDataURL={"/sample.gif"}
+          />
+          {currencyValue
+            .toFixed(fixedDecimalPoint)
+            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+        </>
+      ) : process.env.REACT_APP_GEM_ENV === "prod" ? (
+        "$" +
+        currencyValue
+          .toFixed(fixedDecimalPoint)
+          .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+      ) : (
+        ""
+      )}
+    </>
+  );
+};
+
+export const getOS = () => {
+  // Check if window object is defined (client-side)
+  if (typeof window !== "undefined") {
+    let userAgent = window.navigator.userAgent,
+      platform = window.navigator.platform,
+      macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"],
+      windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"],
+      iosPlatforms = ["iPhone", "iPad", "iPod"],
+      os = null;
+
+    if (macosPlatforms.indexOf(platform) !== -1) {
+      os = "Mac OS";
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+      os = "iOS";
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+      os = "Windows";
+    } else if (/Android/.test(userAgent)) {
+      os = "Android";
+    } else if (/Linux/.test(platform)) {
+      os = "Linux";
+    } else {
+      os = "others";
+    }
+
+    return os;
+  } else {
+    // If window is not defined (server-side rendering), return a default value or handle the case accordingly
+    return "unknown";
+  }
 };
 
 export const feeCharges = [
   { network: "binance", fee: 2, min: "10", max: 1000000 },
   { network: "matic", fee: 2, min: "10", max: 1000000 },
-  { network: "ethereum", fee: 35, min: "36", max: 1000000 },
+  { network: "ethereum", fee: 35, min: "36", max: 1000000 }
 ];
 
 export const roundDown = (number, decimals) => {
@@ -368,7 +465,7 @@ export const calculateTimeLeft = (input, cInput) => {
     days: 0,
     hours: 0,
     minutes: 0,
-    seconds: 0.1,
+    seconds: 0.1
   };
 
   if (difference > 0) {
@@ -376,7 +473,7 @@ export const calculateTimeLeft = (input, cInput) => {
       days: Math.floor(difference / (1000 * 60 * 60 * 24)),
       hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
       minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
+      seconds: Math.floor((difference / 1000) % 60)
     };
   }
 
@@ -393,78 +490,78 @@ export const level = (value) => {
     {
       type: "1",
       name: "LVL 1",
-      value: lvl001,
+      value: lvl001
     },
     {
       type: "2",
       name: "LVL 2",
-      value: lvl002,
+      value: lvl002
     },
     {
       type: "3",
       name: "LVL 3",
-      value: lvl003,
+      value: lvl003
     },
     {
       type: "4",
       name: "LVL 4",
-      value: lvl004,
+      value: lvl004
     },
     {
       type: "5",
       name: "LVL 5",
-      value: lvl005,
+      value: lvl005
     },
     {
       type: "6",
       name: "LVL 6",
-      value: lvl006,
+      value: lvl006
     },
     {
       type: "7",
       name: "LVL 7",
-      value: lvl007,
+      value: lvl007
     },
     {
       type: "8",
       name: "LVL 8",
-      value: lvl008,
+      value: lvl008
     },
     {
       type: "9",
       name: "LVL 9",
-      value: lvl009,
+      value: lvl009
     },
     {
       type: "10",
       name: "LVL 10",
-      value: lvl0010,
+      value: lvl0010
     },
     {
       type: "11",
       name: "LVL 11",
-      value: lvl0011,
+      value: lvl0011
     },
     {
       type: "12",
       name: "LVL 12",
-      value: lvl0012,
+      value: lvl0012
     },
     {
       type: "13",
       name: "LVL 13",
-      value: lvl0013,
+      value: lvl0013
     },
     {
       type: "14",
       name: "LVL 14",
-      value: lvl0014,
+      value: lvl0014
     },
     {
       type: "15",
       name: "LVL 15",
-      value: lvl0015,
-    },
+      value: lvl0015
+    }
   ];
   const levelData = level.find((obj) => obj.type === value);
   return levelData;
@@ -475,53 +572,53 @@ export const hurleyLevels = (data) => {
     {
       type: "1",
       name: "LVL 1",
-      value: hlvl001,
+      value: hlvl001
     },
     {
       type: "2",
       name: "LVL 2",
-      value: hlvl002,
+      value: hlvl002
     },
     {
       type: "3",
       name: "LVL 3",
-      value: hlvl003,
+      value: hlvl003
     },
     {
       type: "4",
       name: "LVL 4",
-      value: hlvl004,
+      value: hlvl004
     },
     {
       type: "5",
       name: "LVL 5",
-      value: hlvl005,
+      value: hlvl005
     },
     {
       type: "6",
       name: "LVL 6",
-      value: hlvl006,
+      value: hlvl006
     },
     {
       type: "7",
       name: "LVL 7",
-      value: hlvl007,
+      value: hlvl007
     },
     {
       type: "8",
       name: "LVL 8",
-      value: hlvl008,
+      value: hlvl008
     },
     {
       type: "9",
       name: "LVL 9",
-      value: hlvl009,
+      value: hlvl009
     },
     {
       type: "10",
       name: "LVL 10",
-      value: hlvl0010,
-    },
+      value: hlvl0010
+    }
   ];
   const hurleyLevelData = level.find((obj) => obj?.type === data);
   return hurleyLevelData;
@@ -534,43 +631,43 @@ export const role = (value, style) => {
       name: "BATSMAN",
       style: "LH",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/LH.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/LH.png"
     },
     {
       type: "Batsman",
       name: "BATSMAN",
       style: "RH",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/RH.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/RH.png"
     },
     {
       type: "Bowler",
       name: "BOWLER",
       style: "LA",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/LA.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/LA.png"
     },
     {
       type: "Bowler",
       name: "BOWLER",
       style: "RA",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/RA.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/RA.png"
     },
     {
       type: "Bat",
       name: "BAT",
       style: "BAT",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/BAT.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/jump/jump-trade/BAT.png"
     },
     {
       type: "Fielder",
       name: "FIELDER",
       style: "Fielder",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jumptrade/mcl_fieldingicon.png",
-    },
+        "https://cdn.guardianlink.io/product-hotspot/images/jumptrade/mcl_fieldingicon.png"
+    }
   ];
   const roleData = role.find(
     (obj) => obj.type === value && obj.style === style
@@ -583,63 +680,63 @@ export const playerCategory = (value) => {
     {
       type: "ROOKIE",
       value: "RO",
-      color: "#3b56ff",
+      color: "#3b56ff"
     },
     {
       type: "RARE",
       value: "RA",
-      color: "#f58220",
+      color: "#f58220"
     },
     {
       type: "EPIC",
       value: "EP",
-      color: "#9e6cef",
+      color: "#9e6cef"
     },
     {
       type: "LEGEND",
       value: "LG",
-      color: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)",
+      color: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)"
     },
     {
       type: "ULTRA LEGEND",
       value: "UL",
-      color: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)",
+      color: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)"
     },
     {
       type: "SUPER RARE",
       value: "SR",
-      color: "#803cef",
+      color: "#803cef"
     },
     {
       type: "ULTRA RARE",
       value: "UR",
-      color: "#803cef",
+      color: "#803cef"
     },
     {
       type: "IMMORTAL",
       value: "IM",
-      color: "#803cef",
+      color: "#803cef"
     },
     {
       type: "UNIQUE",
       value: "UN",
-      color: "#803cef",
+      color: "#803cef"
     },
     {
       type: "PREMIUM",
       value: "PR",
-      color: "#803cef",
+      color: "#803cef"
     },
     {
       type: "SUPERIOR",
       value: "SP",
-      color: "#803cef",
+      color: "#803cef"
     },
     {
       type: "STANDARD",
       value: "ST",
-      color: "#803cef",
-    },
+      color: "#803cef"
+    }
   ];
 
   const playerCatData = playerCategory.find((obj) => obj.type === value);
@@ -651,33 +748,33 @@ export const HurleyCategoory = (value) => {
     {
       type: "RARE",
       value: "RA",
-      color: "#3b56ff",
+      color: "#3b56ff"
     },
     {
       type: "EPIC",
       value: "EP",
-      color: "#3b56ff",
+      color: "#3b56ff"
     },
     {
       type: "LEGENDARY",
       value: "LG",
-      color: "#3b56ff",
+      color: "#3b56ff"
     },
     {
       type: "IMMORTAL",
       value: "IM",
-      color: "#3b56ff",
+      color: "#3b56ff"
     },
     {
       type: "COMMON",
       value: "CO",
-      color: "#3b56ff",
+      color: "#3b56ff"
     },
     {
       type: "UNCOMMON",
       value: "UCO",
-      color: "#3b56ff",
-    },
+      color: "#3b56ff"
+    }
   ];
 
   const hurleyCategoryData = category.find((obj) => obj.type === value);
@@ -690,56 +787,56 @@ export const Nationality = (value) => {
       type: "India",
       name: "India",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_India.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_India.png"
     },
     {
       type: "Australiaki",
       name: "Australia",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Australia.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Australia.png"
     },
     {
       type: "Bangladesh",
       name: "Bangladesh",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Bangladesh.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Bangladesh.png"
     },
     {
       type: "England",
       name: "England",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_England.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_England.png"
     },
     {
       type: "New Zealand",
       name: "New Zealand",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_NewZealand.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_NewZealand.png"
     },
     {
       type: "Pakistan",
       name: "Pakistan",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Pakistan.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Pakistan.png"
     },
     {
       type: "South Africa",
       name: "South Africa",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_SouthAfrica.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_SouthAfrica.png"
     },
     {
       type: "Sri Lanka",
       name: "Sri Lanka",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Srilanka.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Srilanka.png"
     },
     {
       type: "Zimbabwe",
       name: "Zimbabwe",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Zimbabwe.png",
-    },
+        "https://cdn.guardianlink.io/product-hotspot/images/shots/shots_country_Zimbabwe.png"
+    }
   ];
   const NationalityData = Nationality.find((obj) => obj.type === value);
   return NationalityData;
@@ -750,20 +847,20 @@ export const batPower = (value) => {
       type: "1",
       name: "BAT",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jumptradeapp/2x_1.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/jumptradeapp/2x_1.png"
     },
     {
       type: "2",
       name: "BAT",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jumptradeapp/2x_2.png",
+        "https://cdn.guardianlink.io/product-hotspot/images/jumptradeapp/2x_2.png"
     },
     {
       type: "3",
       name: "BAT",
       value:
-        "https://cdn.guardianlink.io/product-hotspot/images/jumptradeapp/2x_3.png",
-    },
+        "https://cdn.guardianlink.io/product-hotspot/images/jumptradeapp/2x_3.png"
+    }
   ];
   const batPowerData = batPower.find((obj) => obj.type == value?.toString());
   return batPowerData;
@@ -946,7 +1043,7 @@ export const raddx_level = (value) => {
     levels.push({
       type: `${i}`,
       name: `LVL ${i}`,
-      value: raddx_images[`level_${i}`],
+      value: raddx_images[`level_${i}`]
     });
   }
   const levelData = levels.find((obj) => obj.type === value?.toString());
@@ -958,33 +1055,33 @@ export const raddx_car_category = (value) => {
     {
       type: "Battle",
       name: "Battle",
-      value: raddx_images.car_category_battle,
+      value: raddx_images.car_category_battle
     },
     {
       type: "Concept",
       name: "Concept",
-      value: raddx_images.car_category_concept,
+      value: raddx_images.car_category_concept
     },
     {
       type: "Hyper",
       name: "Hyper",
-      value: raddx_images.car_category_hyper,
+      value: raddx_images.car_category_hyper
     },
     {
       type: "Super",
       name: "Super",
-      value: raddx_images.car_category_super,
+      value: raddx_images.car_category_super
     },
     {
       type: "Tuner",
       name: "Tuner",
-      value: raddx_images.car_category_tuner,
+      value: raddx_images.car_category_tuner
     },
     {
       type: "Vintage",
       name: "Vintage",
-      value: raddx_images.car_category_vintage,
-    },
+      value: raddx_images.car_category_vintage
+    }
   ];
 
   const data = car_categories.find((obj) => obj.type === value?.toString());
@@ -997,56 +1094,56 @@ export const raddx_category = (value) => {
       name: "COMMON",
       value: "CO",
       color: "blue_color",
-      textColor: "#3b56ff",
+      textColor: "#3b56ff"
     },
     {
       name: "IMMORTAL",
       value: "IM",
       color: "lavender_color",
-      textColor: "#803cef",
+      textColor: "#803cef"
     },
     {
       name: "RARE",
       value: "RA",
       color: "orange_color",
-      textColor: "#f58220",
+      textColor: "#f58220"
     },
     {
       name: "ALIEN",
       value: "AL",
       color: "lavender_color",
-      textColor: "#803cef",
+      textColor: "#803cef"
     },
     {
       name: "LEGENDARY",
       value: "LG",
       color: "multi_color",
-      textColor: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)",
+      textColor: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)"
     },
     // Land Categories
     {
       name: "HEART",
       value: "HT",
       color: "blue_color",
-      textColor: "#3b56ff",
+      textColor: "#3b56ff"
     },
     {
       name: "PRIME",
       value: "PM",
       color: "lavender_color",
-      textColor: "#803cef",
+      textColor: "#803cef"
     },
     {
       name: "MAINLAND",
       value: "ML",
       color: "multi_color",
-      textColor: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)",
+      textColor: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)"
     },
     {
       name: "DOWNTOWN",
       value: "DT",
       color: "orange_color",
-      textColor: "#f58220",
+      textColor: "#f58220"
     },
 
     //Building Categories
@@ -1054,26 +1151,26 @@ export const raddx_category = (value) => {
       name: "PLATINUM",
       value: "PT",
       color: "lavender_color",
-      textColor: "#803cef",
+      textColor: "#803cef"
     },
     {
       name: "DIAMOND",
       value: "DM",
       color: "multi_color",
-      textColor: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)",
+      textColor: "linear-gradient(202deg, #e2ff00, #18e0e0, #e8318d)"
     },
     {
       name: "GOLD",
       value: "GO",
       color: "gold_color",
-      textColor: "#cebd48",
+      textColor: "#cebd48"
     },
     {
       name: "SILVER",
       value: "SL",
       color: "blue_color",
-      textColor: "#3b56ff",
-    },
+      textColor: "#3b56ff"
+    }
   ];
 
   const data = raddxCategory.find((obj) => obj.name === value);
@@ -1084,12 +1181,12 @@ export const raddx_roles = (value) => {
   const raddxRoles = [
     {
       name: "Land",
-      value: raddx_images.land_icon,
+      value: raddx_images.land_icon
     },
     {
       name: "Building",
-      value: raddx_images.building_icon,
-    },
+      value: raddx_images.building_icon
+    }
   ];
 
   const data = raddxRoles.find((obj) => obj.name === value);
@@ -1105,11 +1202,11 @@ export const invokeTrackEvent = (eventName, payload = {}) => {
 export const EVENT_NAMES = {
   USER_SIGN_UP: "SignUp Completed",
 
-  GUARDIANLINK_WALLET_VIEWED: "GuardianLink Wallet Viewed",
+  JT_WALLET_VIEWED: "JT Wallet Viewed",
 
-  WALLET_DEPOSIT_INITIATED: "GuardianLink Wallet Deposit Initiated",
+  WALLET_DEPOSIT_INITIATED: "JT Wallet Deposit Initiated",
 
-  WALLET_WITHDRAW_INITIATED: "GuardianLink Wallet Withdraw Initiated",
+  WALLET_WITHDRAW_INITIATED: "JT Wallet Withdraw Initiated",
 
   PROFILE_UPDATED: "Profile Updated",
 
@@ -1141,7 +1238,7 @@ export const EVENT_NAMES = {
 
   KYC_COMPLETED: "KYC Completed",
 
-  KYC_FAILED: "KYC Failed",
+  KYC_FAILED: "KYC Failed"
 };
 export const formattedBundlePrice = (value, digit = 6) => {
   value = parseFloat(value);
@@ -1163,3 +1260,10 @@ export const validateCurrencyBundleNft = (value) => {
   const re = /^[1-9][0-9]*$/;
   return re.test(value);
 };
+
+export const ludoAllowUserslugs = [
+  "KGPRngpSPGO3b1Xl",
+  "GW6jyrzvSd5rBJ9d",
+  "1bd2ryGSPm5Z3gjE",
+  "yN5YnpqSPWR93PwE",
+];

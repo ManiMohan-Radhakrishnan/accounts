@@ -13,12 +13,12 @@ import {
   RiDashboardLine,
   RiTableAltLine,
   RiNotification2Line,
-  RiExchangeFundsFill,
+  RiExchangeFundsFill
 } from "react-icons/ri";
 import {
   MdCardMembership,
   MdConnectWithoutContact,
-  MdSportsCricket,
+  MdSportsCricket
 } from "react-icons/md";
 import { GiCartwheel } from "react-icons/gi";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
@@ -33,7 +33,7 @@ import {
   Card,
   Dropdown,
   DropdownButton,
-  useAccordionButton,
+  useAccordionButton
 } from "react-bootstrap";
 import dayjs from "dayjs";
 import { OverlayTrigger, Popover } from "react-bootstrap";
@@ -42,7 +42,7 @@ import {
   AiFillFacebook,
   AiFillTwitterCircle,
   AiOutlineFileProtect,
-  AiOutlineLink,
+  AiOutlineLink
 } from "react-icons/ai";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { useHistory } from "react-router";
@@ -51,9 +51,11 @@ import { toast } from "react-toastify";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import {
+  getLudoToken,
   getNotificationApi,
   getReferralDashboardList,
-  readNotificationApi,
+  getTornadoGameLink,
+  readNotificationApi
 } from "../../api/methods";
 import { user_logout_thunk } from "../../redux/thunk/user_thunk";
 
@@ -67,14 +69,18 @@ import dropsIcon from "../../images/menu-icons/drops.svg";
 import rentalIcon from "../../images/menu-icons/rental.svg";
 import mclGameIcon from "../../images/menu-icons/mcl-game.svg";
 import JumpProIcon from "../../images/menu-icons/jt-pro-02.svg";
+import TornadoIcon from "../../images/menu-icons/tornado.svg";
+import LudoIcon from "../../images/menu-icons/ludo-icon.svg";
 import moreIcon from "../../images/menu-icons/more.svg";
 import CallitLogo from "../../images/call-it.svg";
+import NFTBurn from "../../images/menu-icons/nft-burn.svg";
 
 // Share popup dependency
 import {
+  ludoAllowUserslugs,
   openWindow,
   openWindowBlank,
-  useOnClickOutside,
+  useOnClickOutside
 } from "../../utils/common";
 import { BiBell } from "react-icons/bi";
 import { Backdrop } from "@mui/material";
@@ -96,7 +102,7 @@ const SideNav = ({
   MenuList,
   guildUserMenuList,
   getUserPermission,
-  guildInvite,
+  guildInvite
 }) => {
   const refOutside = useRef();
   const [referralDashboard, setreferralDashboard] = useState();
@@ -137,7 +143,7 @@ const SideNav = ({
     "user-management-profile",
     "user-management-sub-admin",
     "guild-activity",
-    "game-history",
+    "game-history"
   ];
 
   if (isIndiggMenu === "show-menu") {
@@ -168,9 +174,14 @@ const SideNav = ({
   let defaultKey;
   if (width) {
     if (
-      ["mynft", "nft-transfer", "my-cards", "profile", "rented-nft"].includes(
-        currentPage
-      )
+      [
+        "mynft",
+        "nft-transfer",
+        "my-cards",
+        "profile",
+        "rented-nft"
+        // "mini-game",
+      ].includes(currentPage)
     ) {
       defaultKey = "0";
     } else {
@@ -183,9 +194,14 @@ const SideNav = ({
   let defaultKeyIndigg;
   if (width) {
     if (
-      ["mynft", "nft-transfer", "my-cards", "profile", "rented-nft"].includes(
-        currentPageIndigg
-      )
+      [
+        "mynft",
+        "nft-transfer",
+        "my-cards",
+        "profile",
+        "rented-nft",
+        "mini-game"
+      ].includes(currentPageIndigg)
     ) {
       defaultKey = "0";
     } else {
@@ -211,9 +227,9 @@ const SideNav = ({
           ...notification,
           notifications: [
             ...notification.notifications,
-            ...result.data.data.notifications,
+            ...result.data.data.notifications
           ],
-          next_page: result.data.data.next_page,
+          next_page: result.data.data.next_page
         });
       }
     } catch (error) {
@@ -292,6 +308,38 @@ const SideNav = ({
     handleTransferNftMenu();
   }, []);
 
+  const handleTornadoGameLink = async () => {
+    try {
+      let token = await getTornadoGameLink();
+
+      if (token?.data?.data?.data) {
+        window.open(
+          `${
+            process.env.REACT_APP_TORNADO_GAME_LINK
+          }/?data=${encodeURIComponent(token?.data?.data?.data)}`,
+          "_blank"
+        );
+      }
+    } catch (err) {
+      console.log("🚀 ~ handleTornadoGameLink ~ err:", err);
+      toast.error(
+        "The request could not be processed at this time. Please try again."
+      );
+    }
+  };
+
+  const getGamelink = async () => {
+    try {
+      let response = await getLudoToken();
+      window.open(response?.data?.data?.game1?.url, "_blank");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        "The request could not be processed at this time. Please try again."
+      );
+    }
+  };
+
   return (
     <>
       <div className="side_menu for-mobile">
@@ -355,14 +403,53 @@ const SideNav = ({
                   <Dropdown.Item
                     onClick={() =>
                       window.open(
-                        `${process.env.REACT_APP_MARKETPLACE_URL}/drop/tornado/tornado-pass`,
+                        `${process.env.REACT_APP_MARKETPLACE_URL}/drop/ludo-master-nfts`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    {/* <span className="blink_contest"> */}
+                    Ludo NFTs
+                    {/* <span className="new-badge">new</span>
+                    </span> */}
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() =>
+                      window.open(
+                        `${process.env.REACT_APP_MARKETPLACE_URL}/drop/carrom-nfts`,
                         "_blank"
                       )
                     }
                   >
                     <span className="blink_contest">
-                      Tornado Master NFTs <span className="new-badge">new</span>
+                      Carrom NFTs <span className="new-badge">new</span>
                     </span>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() =>
+                      window.open(
+                        `${process.env.REACT_APP_MARKETPLACE_URL}/drop/rss/rss-pass`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    <span className="blink_contest">
+                      Racing Super Star Pass NFTs{" "}
+                      <span className="new-badge">new</span>
+                    </span>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() =>
+                      window.open(
+                        `${process.env.REACT_APP_MARKETPLACE_URL}/drop/tornado/tornado-pass`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    {/* <span className="blink_contest"> */}
+                    Tornado Master NFTs
+                    {/* <span className="new-badge">new</span>
+                    </span> */}
                   </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() =>
@@ -500,7 +587,27 @@ const SideNav = ({
                   </div>
                 </Dropdown.Toggle>
               </Dropdown>
+
+              {/* {ludoAllowUserslugs?.includes(user?.slug) && ( */}
               <Dropdown
+                drop="up"
+                aria-haspopup
+                autoClose={["inside", "outside"]}
+              >
+                <Dropdown.Toggle
+                  align="start"
+                  drop="up"
+                  // as={RoleDropdown}
+                >
+                  <div onClick={getGamelink}>
+                    <img src={LudoIcon} height="20" width="20" />
+                    <span>Ludo</span>
+                  </div>
+                </Dropdown.Toggle>
+              </Dropdown>
+              {/* // )} */}
+
+              {/* <Dropdown
                 drop="up"
                 aria-haspopup
                 autoClose={["inside", "outside"]}
@@ -519,7 +626,7 @@ const SideNav = ({
                     <span>d'marketplace</span>
                   </div>
                 </Dropdown.Toggle>
-              </Dropdown>
+              </Dropdown> */}
               <Dropdown drop="up" autoClose={["inside", "outside"]}>
                 <Dropdown.Toggle
                   align="start"
@@ -532,6 +639,9 @@ const SideNav = ({
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="start" drop="center">
+                  <Dropdown.Item onClick={handleTornadoGameLink}>
+                    Tornado
+                  </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
                       openWindow(
@@ -542,6 +652,16 @@ const SideNav = ({
                   >
                     Tournaments
                   </Dropdown.Item>
+                  {MenuList && MenuList?.length > 0 && (
+                    <Dropdown.Item
+                      onClick={() => {
+                        history.push(`/accounts/${MenuList[0]}`);
+                      }}
+                    >
+                      Guild
+                    </Dropdown.Item>
+                  )}
+
                   <Dropdown.Item
                     onClick={() => {
                       openWindow(
@@ -588,9 +708,13 @@ const SideNav = ({
             <Accordion defaultActiveKey={defaultKey}>
               <li
                 className={`vertical-item level1 ${
-                  ["mynft", "nft-transfer", "profile", "my-cards"].includes(
-                    currentPage
-                  )
+                  [
+                    "mynft",
+                    "nft-transfer",
+                    "profile",
+                    "my-cards",
+                    "mini-game"
+                  ].includes(currentPage)
                     ? "list-active"
                     : ""
                 }`}
@@ -669,6 +793,16 @@ const SideNav = ({
                         <span>Referral</span>{" "}
                       </Link>
                     </li>
+                    {/* <li
+                      className={`vertical-item level1 ${
+                        currentPage === "mini-game" ? "list-active" : ""
+                      }`}
+                    >
+                      <Link to="/accounts/mini-game" className="list_item_a">
+                        <MdConnectWithoutContact />
+                        <span>Mini Game</span>{" "}
+                      </Link>
+                    </li> */}
                   </Card.Body>
                 </Accordion.Collapse>
               </li>
@@ -680,8 +814,7 @@ const SideNav = ({
               >
                 <ContextAwareToggle eventKey="1">
                   <Link to="/accounts/wallet" className="list_item_a">
-                    <RiWallet3Line className="icon" />{" "}
-                    <span>GuardianLink Wallet</span>
+                    <RiWallet3Line className="icon" /> <span>JT Wallet</span>
                   </Link>
                 </ContextAwareToggle>
               </li>
@@ -696,7 +829,7 @@ const SideNav = ({
                     "game-pass",
                     "bid-activity",
                     "fusor-history",
-                    "burn-history",
+                    "burn-history"
                   ].includes(currentPage)
                     ? "list-active"
                     : ""
@@ -741,7 +874,14 @@ const SideNav = ({
                       }`}
                     >
                       <Link to="/accounts/burn-history" className="list_item_a">
-                        <RiExchangeFundsFill /> <span>Burn history</span>
+                        <img
+                          src={NFTBurn}
+                          height="20"
+                          width="20"
+                          alt="burn-image"
+                        />
+                        &nbsp;
+                        <span> &nbsp; Burn history</span>
                       </Link>
                     </li>
 
@@ -1125,7 +1265,7 @@ const SharePopover = ({
   icon,
   placement,
   title,
-  listedShare = false,
+  listedShare = false
 }) => {
   const referralcode = user?.referral_code;
 

@@ -1,20 +1,32 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { useQuery } from "../../hooks/url-params";
 import { toggleFreshworksHelp } from "../../utils/common";
 import { GAMES } from "../../utils/game-config";
+import { nftDetailApi } from "../../api/methods-marketplace";
+// import { getMiniGameDetails } from "../../api/methods";
+// import { setMiniGameInfo } from "../../redux/actions/user_action";
+
 import { Tabs } from "../my-nfts/tabs";
 import { Tabs as RaddxTabs } from "../raddx/my-nfts/tabs";
 import { Tabs as HurleyTabs } from "../hurley/tabs";
 import { Tabs as MiniGameTabs } from "../mini-game/tabs";
-
-import "./referalstyle.scss";
+import { Tabs as RacingSuperStar } from "../racing-super-star/tabs";
+import { Tabs as Carrom } from "../carrom/tabs";
+import { Tabs as Ludo } from "../ludo/tabs";
 
 import FusorPopup from "./fusor-popup";
-import { fuseNFTApi, nftDetailApi } from "../../api/methods-marketplace";
+
+import "./referalstyle.scss";
+import { BsInfoCircleFill } from "react-icons/bs";
+import { PiInfoFill } from "react-icons/pi";
+
+import ToolTip from "../tooltip";
 
 const MyNFTsNew = ({ hideMenus }) => {
+  const { user } = useSelector((state) => state.user.data);
   const location = useLocation();
   const history = useHistory();
   const query = useQuery(location.search);
@@ -23,10 +35,17 @@ const MyNFTsNew = ({ hideMenus }) => {
   const isRaddxGame = gameName === GAMES.RADDX;
   const isHurleyGame = gameName === GAMES.HURLEY;
   const isMiniGame = gameName === GAMES.MINI;
+  const isSonyGame = gameName === GAMES.SONY;
+  const isRacingSuperStar = gameName === GAMES.RACINGSUPERSTAR;
+  const isCarrom = gameName === GAMES.CARROM;
+  const isLudo = gameName === GAMES.LUDO;
+
   const [fusorNftPopup, setFusorNftPopup] = useState(query?.get("fusor_id"));
   const [fusorSlug, setFusorSlug] = useState(query?.get("fusor_id"));
   const [fusorDetails, setFusorDetails] = useState({});
   const [searchParams, setSearchParams] = useState();
+  const [tabInfo, setTabInfo] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (fusorSlug) getFusorDetails();
@@ -35,7 +54,11 @@ const MyNFTsNew = ({ hideMenus }) => {
     if (game_name === GAMES.MCL) setGameName(GAMES.MCL);
     else if (game_name === GAMES.RADDX) setGameName(GAMES.RADDX);
     else if (game_name === GAMES.HURLEY) setGameName(GAMES.HURLEY);
-    else if (game_name === GAMES.MINI) setGameName(GAMES.MINI);
+    else if (game_name === GAMES.SONY) setGameName(GAMES.SONY);
+    else if (game_name === GAMES.RACINGSUPERSTAR)
+      setGameName(GAMES.RACINGSUPERSTAR);
+    else if (game_name === GAMES.CARROM) setGameName(GAMES.CARROM);
+    else if (game_name === GAMES.LUDO) setGameName(GAMES.LUDO);
     else setGameName(GAMES.MCL);
     toggleFreshworksHelp(false);
     return () => {
@@ -53,6 +76,20 @@ const MyNFTsNew = ({ hideMenus }) => {
   const removeQueryParam = () => {
     history.replace(window.location.pathname);
   };
+
+  // const miniGameInfo = async () => {
+  //   try {
+  //     const response = await getMiniGameDetails();
+  //     setTabInfo(response?.data?.data?.celebrities);
+  //     dispatch(setMiniGameInfo(response?.data?.data?.celebrities));
+  //   } catch (error) {
+  //     console.log("🚀 ~ miniGameInfo ~ error:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   miniGameInfo();
+  // }, []);
 
   return (
     <>
@@ -102,6 +139,51 @@ const MyNFTsNew = ({ hideMenus }) => {
                       >
                         TORNADO
                       </span>
+                      <span
+                        className={`switch ${isLudo ? "active" : ""}`}
+                        onClick={() => {
+                          setGameName(GAMES.LUDO);
+                          searchParams && removeQueryParam();
+                        }}
+                      >
+                        Ludo{"    "}
+                        <ToolTip
+                          placement={"top"}
+                          icon={<PiInfoFill />}
+                          content={"Ludo Habibi"}
+                        />
+                      </span>
+                      <span
+                        className={`switch ${
+                          isRacingSuperStar ? "active" : ""
+                        }`}
+                        onClick={() => {
+                          setGameName(GAMES.RACINGSUPERSTAR);
+                          searchParams && removeQueryParam();
+                        }}
+                      >
+                        RSS{"    "}
+                        <ToolTip
+                          placement={"top"}
+                          icon={<PiInfoFill />}
+                          content={"Racing Super Stars"}
+                        />
+                      </span>
+
+                      <span
+                        className={`switch ${isCarrom ? "active" : ""}`}
+                        onClick={() => {
+                          setGameName(GAMES.CARROM);
+                          searchParams && removeQueryParam();
+                        }}
+                      >
+                        WOC{"    "}
+                        <ToolTip
+                          placement={"top"}
+                          icon={<PiInfoFill />}
+                          content={"World Of Carrom"}
+                        />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -112,7 +194,16 @@ const MyNFTsNew = ({ hideMenus }) => {
                 ) : isHurleyGame ? (
                   <HurleyNfts hideMenus={hideMenus} />
                 ) : isMiniGame ? (
-                  <MiniGameNfts hideMenus={hideMenus} />
+                  <MiniGameNfts hideMenus={hideMenus} gameName={gameName} />
+                ) : isRacingSuperStar ? (
+                  <RacingSuperStarNfts
+                    hideMenus={hideMenus}
+                    gameName={gameName}
+                  />
+                ) : isCarrom ? (
+                  <CarromNfts hideMenus={hideMenus} gameName={gameName} />
+                ) : isLudo ? (
+                  <LudoNfts hideMenus={hideMenus} gameName={gameName} />
                 ) : (
                   <></>
                 )}
@@ -139,6 +230,22 @@ const RaddxNfts = ({ hideMenus }) => <RaddxTabs hideMenus={hideMenus} />;
 
 const HurleyNfts = ({ hideMenus }) => <HurleyTabs hideMenus={hideMenus} />;
 
-const MiniGameNfts = ({ hideMenus }) => <MiniGameTabs hideMenus={hideMenus} />;
+const MiniGameNfts = ({ hideMenus, gameName }) => (
+  <MiniGameTabs hideMenus={hideMenus} gameName={gameName} />
+);
+
+const RacingSuperStarNfts = ({ hideMenus, gameName }) => (
+  <RacingSuperStar hideMenus={hideMenus} gameName={gameName} />
+);
+
+const CarromNfts = ({ hideMenus, gameName }) => (
+  <Carrom hideMenus={hideMenus} gameName={gameName} />
+);
+
+const LudoNfts = ({ hideMenus, gameName }) => (
+  <Ludo hideMenus={hideMenus} gameName={gameName} />
+);
+
+// const SonyNfts = ({ hideMenus }) => <SonyTabs hideMenus={hideMenus} />;
 
 export default MyNFTsNew;

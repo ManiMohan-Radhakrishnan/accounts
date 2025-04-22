@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import {
   user_disable_mfa,
   user_enable_mfa_auth_success,
-  user_disable_mfa_auth_success,
+  user_disable_mfa_auth_success
 } from "../../../redux/actions/user_action";
 import guardian_logo from "../../../images/jump-trade/guardianLinkLogo.png";
 
@@ -21,7 +21,7 @@ import {
   user_load_by_token_thunk,
   user_login_reset_thunk,
   user_login_with_email_thunk,
-  user_login_thunk,
+  user_login_thunk
 } from "./../../../redux/thunk/user_thunk";
 import { openWindowBlank, validateEmail } from "./../../../utils/common";
 import { useQuery } from "./../../../hooks/url-params";
@@ -33,7 +33,7 @@ import {
   resendOtpApi,
   LoginWithOtp,
   ResendEmailOtp,
-  verifyGoogleOtpApi,
+  verifyGoogleOtpApi
 } from "./../../../api/methods";
 
 import GoogleLogin from "../../social-login/google-login";
@@ -41,6 +41,7 @@ import FacebookLogin from "../../social-login/facebook-login";
 
 import "./../style.scss";
 import CheckLoginType from "../checkLoginType";
+import images from "../../../../src/utils/raddx-images.json";
 
 const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
   const location = useLocation();
   const query = useQuery(location.search);
   const redirect = query.get("redirect");
+  const gameRedirect = query.get("from_game");
   const email = query.get("email");
   const withOtp = query.get("with");
 
@@ -66,12 +68,12 @@ const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
   const [key, setKey] = useState("");
   const [googleOTP, setGoogleOTP] = useState(false);
   const [login, setLogin] = useState({
-    email: "",
+    email: ""
   });
 
   const [validation, setValidation] = useState({
     email: false,
-    valid_email: false,
+    valid_email: false
   });
 
   useEffect(() => {
@@ -93,7 +95,7 @@ const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
     if (email && !withOtp) {
       setLogin({ ...login, email: email.trim() });
       setAlreadyExist(
-        "We noticed that your email is already associated with a GuardianLink ID. Please proceed with your login credentials."
+        "We noticed that your email is already associated with a Jump Trade ID. Please proceed with your login credentials."
       );
       history.push("/signin");
     } else if (email && withOtp) {
@@ -231,14 +233,16 @@ const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
         const payload = {
           otp_code: otpValue,
           secret_key: key,
-          email: login.email,
+          email: login.email
         };
 
         const result = await verifyGoogleOtpApi(payload);
         setCookies(result.data.data.token);
         setVerifyLoading(false);
         setNavigate(true);
-        dispatch(user_load_by_token_thunk(result.data.data.token));
+        dispatch(
+          user_load_by_token_thunk(result.data.data.token, gameRedirect)
+        );
         // dispatch(user_login_google_otp_action());
         // return false
         // dispatch(user_login_thunk(login, setError, setOTP));
@@ -270,7 +274,7 @@ const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
 
         const result = await LoginWithOtp({
           email: login.email,
-          otp: otpValue,
+          otp: otpValue
         });
         setVerifyLoading(false);
 
@@ -290,7 +294,9 @@ const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
             setCookies(result.data.data.token);
 
             setNavigate(true);
-            dispatch(user_load_by_token_thunk(result.data.data.token));
+            dispatch(
+              user_load_by_token_thunk(result.data.data.token, gameRedirect)
+            );
           }
         }
         // return false;
@@ -366,18 +372,18 @@ const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
                   <ToolTip
                     icon={
                       <img
-                        src={guardian_logo}
+                        src={images.jt_logo}
                         role="button"
-                        onClick={() =>
-                          openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                        }
+                        // onClick={() =>
+                        //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                        // }
                       />
                     }
                     content={
                       <>
-                        Your GuardianLink ID gives access to all NFT drops,
-                        marketplaces, &amp; other platforms powered by
-                        GuardianLink.
+                        Your Jump Trade ID gives access to all NFT drops,
+                        marketplaces, &amp; other platforms powered by Jump
+                        Trade.
                       </>
                     }
                     placement="top"
@@ -543,18 +549,18 @@ const LoginWithEmailOtpComponent = ({ currentPage, setcurrentPage }) => {
                   <ToolTip
                     icon={
                       <img
-                        src={guardian_logo}
+                        src={images.jt_logo}
                         role="button"
-                        onClick={() =>
-                          openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
-                        }
+                        // onClick={() =>
+                        //   openWindowBlank(process.env.REACT_APP_GUARDIAN_URL)
+                        // }
                       />
                     }
                     content={
                       <>
-                        Your GuardianLink ID gives access to all NFT drops,
-                        marketplaces, &amp; other platforms powered by
-                        GuardianLink.
+                        Your Jump Trade ID gives access to all NFT drops,
+                        marketplaces, &amp; other platforms powered by Jump
+                        Trade.
                       </>
                     }
                     placement="top"

@@ -1,4 +1,4 @@
-@import "../../styles/common";
+@use "../../styles/common" as *;
 .bl_form_box_new {
   // padding: 1.5rem;
   border-radius: 12px;
@@ -151,6 +151,26 @@ img {
 
 .otp-input {
   padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  span {
+    text-decoration: underline;
+    cursor: pointer;
+    color: red;
+    font-weight: 400 !important;
+    &.disabled,
+    &:disabled {
+      cursor: default;
+      text-decoration: none;
+      color: black;
+    }
+  }
+  .otp-info {
+    margin: 0 auto;
+    width: 40rem;
+  }
 }
 
 .verify-content {
@@ -210,6 +230,8 @@ img {
     }
   }
 
+  margin: 11rem 5rem;
+  width: 100%;
   // height: 20rem;
 
   @media screen and (max-width: 767px) {
@@ -221,8 +243,6 @@ img {
   // @media only screen and (max-width: 479px) {
   //   margin: 8rem 2.5rem;
   // }
-  margin: 11rem 5rem;
-  width: 100%;
 }
 
 .form-group-mfa {
@@ -400,6 +420,19 @@ img {
         font-size: 1rem;
         margin-bottom: 1rem;
       }
+      .step-content {
+        h5 {
+          font-family: $proxima-nova;
+          font-weight: 700;
+          font-size: 1.2rem;
+        }
+        p {
+          font-family: $proxima-nova;
+          font-weight: 400;
+          font-size: 1rem;
+          margin-bottom: 1rem;
+        }
+      }
     }
     .qr_code_new {
       padding: 2rem 0;
@@ -416,6 +449,40 @@ img {
           font-size: 1rem;
         }
       }
+      &.hide-section {
+        pointer-events: none !important;
+        opacity: 0.3 !important;
+      }
     }
   }
+}
+
+.email-verify {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-weight: bold !important;
+  span {
+    text-decoration: underline;
+    cursor: pointer;
+    color: red;
+    font-weight: 400 !important;
+    &.disabled,
+    &:disabled {
+      pointer-events: none;
+      cursor: default;
+      opacity: 0.3;
+    }
+  }
+}
+
+.otp-info {
+  max-width: 20rem;
+  span {
+    font-weight: bold;
+  }
+}
+
+.step-bold {
+  font-weight: bold !important;
 }

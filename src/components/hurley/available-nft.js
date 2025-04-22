@@ -7,7 +7,7 @@ import Lottie from "lottie-react";
 
 import {
   allowForRental,
-  userOwnedNFTsApi,
+  userOwnedNFTsApi
 } from "../../api/methods-marketplace";
 
 import NFTCardList from "./nft-card-list";
@@ -16,7 +16,7 @@ import BulkRent from "./bulk-rent";
 
 import successAnim from "../../images/jump-trade/json/Tick.json";
 import failureAnim from "../../images/jump-trade/json/Cancel.json";
-import { openWindowBlank } from "../../utils/common";
+import { openWindow, openWindowBlank } from "../../utils/common";
 
 import "./styles.scss";
 import { BiX } from "react-icons/bi";
@@ -50,7 +50,7 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
     page,
     filters = null,
     load = false,
-    filterArePresent = false,
+    filterArePresent = false
   }) => {
     if (filters) {
       filtersRef.current = filters;
@@ -64,7 +64,7 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
 
       const result = await userOwnedNFTsApi(page, {
         game_names: [GAMES.HURLEY],
-        ...filtersRef.current,
+        ...filtersRef.current
       });
       if (load) {
         setList([...list, ...result?.data?.data?.nfts]);
@@ -108,7 +108,7 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
     page,
     filters,
     disabledStatus = false,
-    filterArePresent,
+    filterArePresent
   }) => {
     setSelectedAll(false);
     setSelected([]);
@@ -230,47 +230,50 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
 
         {!isBulkRental && list?.length > 0 && (
           <div className={`btn-fixed ${hideMenus ? "hiddenMenu" : ""}`}>
-            {!hideMenus && (
-              <>
-                {selected?.length > 1 ? (
-                  <OverlayTrigger
-                    trigger={["click"]}
-                    rootClose={true}
-                    placement="top"
-                    overlay={popover()}
-                  >
-                    <button
-                      className="btn btn-dark"
-                      type="button"
-                      disabled={selected?.length === 0}
-                    >
-                      List For Sale
-                    </button>
-                  </OverlayTrigger>
-                ) : (
+            <>
+              {selected?.length > 1 ? (
+                <OverlayTrigger
+                  trigger={["click"]}
+                  rootClose={true}
+                  placement="top"
+                  overlay={popover()}
+                >
                   <button
                     className="btn btn-dark"
                     type="button"
-                    disabled={
-                      selected?.length === 0 ||
-                      selected?.length > 1 ||
-                      buttonDisabled
-                    }
-                    onClick={() => {
-                      if (selected?.length === 1) {
-                        const [first] = selected;
-                        first &&
-                          openWindowBlank(
-                            `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}`
-                          );
-                      }
-                    }}
+                    disabled={selected?.length === 0}
                   >
                     List For Sale
                   </button>
-                )}
-              </>
-            )}
+                </OverlayTrigger>
+              ) : (
+                <button
+                  className="btn btn-dark"
+                  type="button"
+                  disabled={
+                    selected?.length === 0 ||
+                    selected?.length > 1 ||
+                    buttonDisabled
+                  }
+                  onClick={() => {
+                    if (selected?.length === 1) {
+                      const [first] = selected;
+                      if (first && !hideMenus) {
+                        openWindowBlank(
+                          `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}`
+                        );
+                      } else if (first && hideMenus) {
+                        openWindow(
+                          `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}?hideMenus=true&hideBack=true`
+                        );
+                      }
+                    }
+                  }}
+                >
+                  List For Sale
+                </button>
+              )}
+            </>
 
             {/* {disableRental ? (
               <OverlayTrigger
@@ -319,7 +322,7 @@ const SelectAll = ({
   selected,
   handleSelectAll,
   setSelectedAll,
-  disabledStatus,
+  disabledStatus
 }) => {
   if (selected.length && selected.length === list.length) {
     setSelectedAll(true);
@@ -345,7 +348,7 @@ const ListForRental = ({
   selectedAll,
   rentalPop,
   setRentalPop,
-  setActiveTab,
+  setActiveTab
 }) => {
   const [modalType, setModalType] = useState("");
 
@@ -431,13 +434,13 @@ const Modal = ({
   selected,
   selectedAll,
   setRentalPop,
-  setActiveTab,
+  setActiveTab
 }) => {
   const handleSubmit = async () => {
     try {
       const response = await allowForRental({
         selected_all: selectedAll,
-        nft_slugs: selectedAll ? [] : selected,
+        nft_slugs: selectedAll ? [] : selected
       });
       setModalType("success");
     } catch (error) {

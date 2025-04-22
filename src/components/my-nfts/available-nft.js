@@ -17,7 +17,7 @@ import BulkRent from "./bulk-rent";
 
 import successAnim from "../../images/jump-trade/json/Tick.json";
 import failureAnim from "../../images/jump-trade/json/Cancel.json";
-import { openWindowBlank } from "../../utils/common";
+import { openWindow, openWindowBlank } from "../../utils/common";
 
 import "./styles.scss";
 import { BiX } from "react-icons/bi";
@@ -241,47 +241,50 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
 
         {!isBulkRental && list?.length > 0 && (
           <div className={`btn-fixed ${hideMenus ? "hiddenMenu" : ""}`}>
-            {!hideMenus && (
-              <>
-                {selected?.length > 1 ? (
-                  <OverlayTrigger
-                    trigger={["click"]}
-                    rootClose={true}
-                    placement="top"
-                    overlay={popover()}
-                  >
-                    <button
-                      className="btn btn-dark"
-                      type="button"
-                      disabled={selected?.length === 0}
-                    >
-                      List For Sale
-                    </button>
-                  </OverlayTrigger>
-                ) : (
+            <>
+              {selected?.length > 1 ? (
+                <OverlayTrigger
+                  trigger={["click"]}
+                  rootClose={true}
+                  placement="top"
+                  overlay={popover()}
+                >
                   <button
                     className="btn btn-dark"
                     type="button"
-                    disabled={
-                      selected?.length === 0 ||
-                      selected?.length > 1 ||
-                      buttonDisabled
-                    }
-                    onClick={() => {
-                      if (selected?.length === 1) {
-                        const [first] = selected;
-                        first &&
-                          openWindowBlank(
-                            `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}`
-                          );
-                      }
-                    }}
+                    disabled={selected?.length === 0}
                   >
                     List For Sale
                   </button>
-                )}
-              </>
-            )}
+                </OverlayTrigger>
+              ) : (
+                <button
+                  className="btn btn-dark"
+                  type="button"
+                  disabled={
+                    selected?.length === 0 ||
+                    selected?.length > 1 ||
+                    buttonDisabled
+                  }
+                  onClick={() => {
+                    if (selected?.length === 1) {
+                      const [first] = selected;
+                      if (first && !hideMenus) {
+                        openWindowBlank(
+                          `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}`
+                        );
+                      } else if (first && hideMenus) {
+                        openWindow(
+                          `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}?hideMenus=true&hideBack=true`
+                        );
+                      }
+                    }
+                  }}
+                >
+                  List For Sale
+                </button>
+              )}
+            </>
 
             {disableRental ? (
               <OverlayTrigger
@@ -473,7 +476,12 @@ const Modal = ({
       });
       setModalType("success");
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      let errorMessage = error?.response?.data?.message;
+
+      // Replace <b> tags with <b style="color: red;">
+      errorMessage = errorMessage.replace(/<b>/g, '<b style="color: black;">');
+
+      toast.error(<div dangerouslySetInnerHTML={{ __html: errorMessage }} />);
     }
   };
 

@@ -11,7 +11,7 @@ import {
   FaMediumM,
   FaFacebookF,
   FaTwitter,
-  FaYoutube,
+  FaYoutube
 } from "react-icons/fa";
 
 import one from "../../images/drops/animation_box.gif";
@@ -139,8 +139,8 @@ const MyTreasureBox = ({ started = true }) => {
                     <h4>The treasure box has arrived</h4>
                     <h3>
                       The rewards you have been eagerly waiting for is now here!
-                      The Treasure Box is your arena to unlock the "Mother of all
-                      Goodness".
+                      The Treasure Box is your arena to unlock the "Mother of
+                      all Goodness".
                     </h3>
                     <h5 className="mb-0">
                       Visit the Rewards section under{" "}
@@ -155,9 +155,10 @@ const MyTreasureBox = ({ started = true }) => {
                         target="_blank"
                         className="color"
                       >
-                        My GuardianLink Wallet
+                        My JT Wallet
                       </Link>{" "}
-                      to redeem the coin rewards you unlock from the Treasure Box.
+                      to redeem the coin rewards you unlock from the Treasure
+                      Box.
                     </h5>
                   </div>
                 </div>
@@ -294,7 +295,9 @@ const MyTreasureBox = ({ started = true }) => {
                                         Opens in
                                         <NFTCounter
                                           time={getEndTime(obj.start_at)}
-                                          handleEndEvent={() => getTreasureList()}
+                                          handleEndEvent={() =>
+                                            getTreasureList()
+                                          }
                                           timeclassName="claim-end-time"
                                           intervalclassName="claim-end-interval"
                                         />
@@ -304,7 +307,9 @@ const MyTreasureBox = ({ started = true }) => {
                                         Claim within
                                         <NFTCounter
                                           time={getEndTime(obj.expire_at)}
-                                          handleEndEvent={() => getTreasureList()}
+                                          handleEndEvent={() =>
+                                            getTreasureList()
+                                          }
                                           timeclassName="claim-end-time"
                                           intervalclassName="claim-end-interval"
                                         />
@@ -326,8 +331,8 @@ const MyTreasureBox = ({ started = true }) => {
                     {perkList.length === 0 && (
                       <>
                         <div className="empty-box-content">
-                          Sorry, you did not receive a Treasure Box as you did not
-                          acquire enough Super Loot during the drop. No
+                          Sorry, you did not receive a Treasure Box as you did
+                          not acquire enough Super Loot during the drop. No
                           worries! The Treasure Box will be returning for our
                           future drops, stay tuned.
                         </div>

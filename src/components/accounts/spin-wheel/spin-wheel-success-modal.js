@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
-import ReactConfetti from "react-confetti";
 import { useHistory } from "react-router-dom";
 import useWindowUtils from "../../../hooks/useWindowUtils";
 
@@ -54,9 +53,11 @@ const SpinWheelSuccessModal = ({
         <Modal.Header className="spin-modal-header" onHide={onHide} closeButton>
           {/* {prize?.won ? "Congratulations" : "Oops!"} */}
           {prize?.won ? (
-            <ReactConfetti
-              numberOfPieces={window.innerWidth > 769 ? 500 : 300}
-            />
+            // <ReactConfetti
+            //   numberOfPieces={window.innerWidth > 769 ? 500 : 300}
+            // />
+
+            <></>
           ) : (
             <></>
           )}

@@ -20,7 +20,7 @@ const CardDetails = ({
   setAddFund,
   setPageNo,
   getTransactionHistory,
-  getDepositStat,
+  getDepositStat
 }) => {
   const { user } = useSelector((state) => state.user.data);
   const [modal, setModal] = useState(false);
@@ -102,7 +102,7 @@ const CardDetails = ({
         }
       } else {
         setError(
-          `Please enter the amount minimum of $${process.env.REACT_APP_STRIPE_MIN_FUND} to fund your GuardianLink wallet`
+          `Please enter the amount minimum of $${process.env.REACT_APP_STRIPE_MIN_FUND} to fund your JT wallet`
         );
       }
     } else {
@@ -259,7 +259,7 @@ const CardDetails = ({
                 {loading ? "Processing please wait..." : "Pay"}
               </button>
               <label className="loaded-info">
-                You need to fund your GuardianLink wallet with a minimum of $
+                You need to fund your JT wallet with a minimum of $
                 {process.env.REACT_APP_STRIPE_MIN_FUND}.
               </label>
             </div>

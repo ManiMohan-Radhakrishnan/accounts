@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { useSelector, connect, useDispatch } from "react-redux";
 import { change_lang_action } from "./redux/actions/lang_action";
-import { setLanguage } from "react-multi-lang";
+// import { setLanguage } from "react-multi-lang";
 import dayjs from "dayjs";
 import { FaTimes } from "react-icons/fa";
 import mixpanel from "mixpanel-browser";
@@ -49,9 +49,11 @@ function App(props) {
 
   setCookiesByName("hideMenus", hideMenus);
 
+  const gameRedirect = params.get("from_game");
+
   useEffect(() => {
     props.change_lang(lang);
-    setLanguage(lang);
+    // setLanguage(lang);
     mixpanel.init("fb37da042db19dafef9b171500d64106", { debug: true });
   }, [props, lang]);
 
@@ -116,7 +118,7 @@ function App(props) {
       setCookies(params.get("token"));
     }
     const token = getCookies();
-    if (token) dispatch(user_load_by_token_thunk(token));
+    if (token) dispatch(user_load_by_token_thunk(token, gameRedirect));
 
     if (user?.data?.user && !token) dispatch(user_logout_thunk());
 

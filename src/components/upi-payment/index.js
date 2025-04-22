@@ -26,7 +26,15 @@ import { BsFillQuestionCircleFill, BsFillInfoCircleFill } from "react-icons/bs";
 import { useQuery } from "../../hooks/url-params";
 import { useLocation } from "react-router-dom";
 
-const UpiPayment = ({ addFund, setAddFund, getDepositStat }) => {
+const UpiPayment = ({
+  addFund,
+  setAddFund,
+  getDepositStat,
+  setDepositDisable,
+  depositDisable,
+  setDisableLoading,
+  setDisableMessage,
+}) => {
   const location = useLocation();
   const query = useQuery(location.search);
   const { user } = useSelector((state) => state.user.data);
@@ -135,15 +143,24 @@ const UpiPayment = ({ addFund, setAddFund, getDepositStat }) => {
   const getOfflinePaymentsDetails = async () => {
     try {
       setLoading(true);
+      setDisableLoading(true);
+      setAddFund({ ...addFund, type: "" });
       const result = await offlinePaymentsDetails();
       setPaymentDetail(result?.data?.data);
 
       setLoading(false);
+      setDisableLoading(false);
     } catch (error) {
       console.log(
         "🚀 ~ file: index.js ~ line 133 ~ offlinePaymentsDetails ~ error",
         error
       );
+      if (error?.data?.status === 422) {
+        setDepositDisable(true);
+        setAddFund({ ...addFund, type: "" });
+        setDisableMessage(error?.data?.message);
+      }
+      setDisableLoading(false);
     }
   };
   const handlePaymentCovert = async (e) => {
@@ -212,191 +229,192 @@ const UpiPayment = ({ addFund, setAddFund, getDepositStat }) => {
 
   return (
     <>
-      <div className="inner-card-details">
-        <div
-          className="pay-list-back"
-          role="button"
-          onClick={() => setAddFund({ ...addFund, type: "" })}
-        >
-          <FiArrowLeft size={25} /> Back
-        </div>
+      {!depositDisable && (
+        <div className="inner-card-details">
+          <div
+            className="pay-list-back"
+            role="button"
+            onClick={() => setAddFund({ ...addFund, type: "" })}
+          >
+            <FiArrowLeft size={25} /> Back
+          </div>
 
-        <div className="bg-white mt-3 p-3 current-balance">
-          <div className="cb-title">Current Balance</div>
-          <div>
-            <div className="cb-balance">
-              {currencyFormat(user.balance, user.currency_name)}
+          <div className="bg-white mt-3 p-3 current-balance">
+            <div className="cb-title">Current Balance</div>
+            <div>
+              <div className="cb-balance">
+                {currencyFormat(user.balance, user.currency_name)}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-3">
-          <>
+          <div className="mt-3">
             <>
-              <div className="d-flex justify-content-between ac-cc-title">
-                <h6 className="scan-text">
-                  Scan Code <br />
-                  <span>
-                    ( No. of UPI deposits allowed per day:{" "}
-                    {paymentdetail?.max_tx}, Remaining : {paymentdetail?.rem_tx}
-                    ){" "}
-                  </span>
-                </h6>{" "}
-              </div>
               <>
-                <div className="text-center mt-4">
-                  {paymentdetail?.link && (
-                    <QRCode value={paymentdetail?.link} width="100%" />
-                  )}
+                <div className="d-flex justify-content-between ac-cc-title">
+                  <h6 className="scan-text">
+                    Scan Code <br />
+                    <span>
+                      ( No. of UPI deposits allowed per day:{" "}
+                      {paymentdetail?.max_tx}, Remaining :{" "}
+                      {paymentdetail?.rem_tx}){" "}
+                    </span>
+                  </h6>{" "}
                 </div>
-              </>
+                <>
+                  <div className="text-center mt-4">
+                    {paymentdetail?.link && (
+                      <QRCode value={paymentdetail?.link} width="100%" />
+                    )}
+                  </div>
+                </>
 
-              <div className="mt-4 mb-3">
-                <CopyToClipboardComponent copyText={paymentdetail?.upi_id} />
-              </div>
+                <div className="mt-4 mb-3">
+                  <CopyToClipboardComponent copyText={paymentdetail?.upi_id} />
+                </div>
 
-              <div className="form-group mb-3 flex-input-grp">
-                <div className="inr-input">
-                  <InputText
-                    type="number"
-                    title={"Amount (INR) "}
-                    value={upiPayment?.amount}
-                    required={validation.amount}
-                    className="af-amount"
-                    placeholder="Amount"
-                    maxLength="7"
-                    onKeyPress={(e) => {
-                      if (e.keyCode) {
-                        return null;
-                      }
-                    }}
-                    upiPayment
-                    onChange={(e) => {
-                      if (
-                        e?.target?.value &&
-                        e?.target?.value <= paymentdetail?.max_deposit
-                      ) {
-                        if (validateNumber(e.target.value)) {
+                <div className="form-group mb-3 flex-input-grp">
+                  <div className="inr-input">
+                    <InputText
+                      type="number"
+                      title={"Amount (INR) "}
+                      value={upiPayment?.amount}
+                      required={validation.amount}
+                      className="af-amount"
+                      placeholder="Amount"
+                      maxLength="7"
+                      onKeyPress={(e) => {
+                        if (e.keyCode) {
+                          return null;
+                        }
+                      }}
+                      upiPayment
+                      onChange={(e) => {
+                        if (
+                          e?.target?.value &&
+                          e?.target?.value <= paymentdetail?.max_deposit
+                        ) {
+                          if (validateNumber(e.target.value)) {
+                            setUpiPayment({
+                              ...upiPayment,
+                              amount: e?.target?.value.trim(),
+                            });
+                            handlePaymentCovert(e.target?.value);
+
+                            if (e?.target?.value) {
+                              setValidation({ ...validation, amount: false });
+                            } else {
+                              setValidation({ ...validation, amount: true });
+                            }
+                          }
+                        } else {
                           setUpiPayment({
                             ...upiPayment,
-                            amount: e?.target?.value.trim(),
+                            amount: "",
                           });
-                          handlePaymentCovert(e.target?.value);
-
-                          if (e?.target?.value) {
-                            setValidation({ ...validation, amount: false });
-                          } else {
-                            setValidation({ ...validation, amount: true });
-                          }
+                          handlePaymentCovert(0);
                         }
-                      } else {
+                      }}
+                    />
+                  </div>
+                  <div className="bg-white current-balance">
+                    <div className="cb-balance">
+                      ~{currencyFormat(paymentApproxUsd?.approx_usd)}
+                      <ToolTip
+                        content={
+                          "Approx value. Conversion rate subject to change"
+                        }
+                        icon={
+                          <BsFillInfoCircleFill
+                            size={16}
+                            className="ms-2 question-icon"
+                          />
+                        }
+                        placement="top"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="form-group mb-3">
+                  {" "}
+                  <label className="input-title">
+                    {" "}
+                    After paying in UPI app, submit the details to process the
+                    payment.
+                  </label>{" "}
+                </div>
+                <div className="form-group mb-3">
+                  <InputText
+                    type="text"
+                    title={"UPI Transaction Id"}
+                    value={upiPayment?.trans_id}
+                    required={validation.trans_id}
+                    className="af-amount"
+                    placeholder="UPI Transaction Id"
+                    // onKeyPress={handleKeyPressEvent}
+                    onChange={(e) => {
+                      if (
+                        (e.target.value.length <= 12 &&
+                          validateNumber(e.target.value)) ||
+                        e.target.value === ""
+                      ) {
                         setUpiPayment({
                           ...upiPayment,
-                          amount: "",
+                          trans_id: e.target.value.trim(),
                         });
-                        handlePaymentCovert(0);
+                      }
+                      if (e) {
+                        setValidation({ ...validation, trans_id: false });
+                      } else {
+                        setValidation({ ...validation, trans_id: true });
                       }
                     }}
                   />
+                  {validation?.valid_trans_id && (
+                    <p className="error_text">
+                      Please enter 12-digit UPI transaction ID
+                    </p>
+                  )}
                 </div>
-                <div className="bg-white current-balance">
-                  <div className="cb-balance">
-                    ~{currencyFormat(paymentApproxUsd?.approx_usd)}
-                    <ToolTip
-                      content={
-                        "Approx value. Conversion rate subject to change"
-                      }
-                      icon={
-                        <BsFillInfoCircleFill
-                          size={16}
-                          className="ms-2 question-icon"
-                        />
-                      }
-                      placement="top"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="form-group mb-3">
-                {" "}
-                <label className="input-title">
-                  {" "}
-                  After paying in UPI app, submit the details to process the
-                  payment.
-                </label>{" "}
-              </div>
-              <div className="form-group mb-3">
-                <InputText
-                  type="text"
-                  title={"UPI Transaction Id"}
-                  value={upiPayment?.trans_id}
-                  required={validation.trans_id}
-                  className="af-amount"
-                  placeholder="UPI Transaction Id"
-                  // onKeyPress={handleKeyPressEvent}
-                  onChange={(e) => {
-                    if (
-                      (e.target.value.length <= 12 &&
-                        validateNumber(e.target.value)) ||
-                      e.target.value === ""
-                    ) {
+                <div className="form-group mb-3">
+                  <InputText
+                    type="text"
+                    title={"Your UPI ID"}
+                    value={upiPayment?.upi_id}
+                    required={validation.upi_id}
+                    className="af-amount"
+                    placeholder="Your UPI ID"
+                    // onKeyPress={handleKeyPressEvent}
+                    onChange={(e) => {
                       setUpiPayment({
                         ...upiPayment,
-                        trans_id: e.target.value.trim(),
+                        upi_id: e.target.value.trim(),
                       });
-                    }
-                    if (e) {
-                      setValidation({ ...validation, trans_id: false });
-                    } else {
-                      setValidation({ ...validation, trans_id: true });
-                    }
-                  }}
-                />
-                {validation?.valid_trans_id && (
-                  <p className="error_text">
-                    Please enter 12-digit UPI transaction ID
-                  </p>
-                )}
-              </div>
-              <div className="form-group mb-3">
-                <InputText
-                  type="text"
-                  title={"Your UPI ID"}
-                  value={upiPayment?.upi_id}
-                  required={validation.upi_id}
-                  className="af-amount"
-                  placeholder="Your UPI ID"
-                  // onKeyPress={handleKeyPressEvent}
-                  onChange={(e) => {
-                    setUpiPayment({
-                      ...upiPayment,
-                      upi_id: e.target.value.trim(),
-                    });
-                    if (e) {
-                      setValidation({ ...validation, upi_id: false });
-                    } else {
-                      setValidation({ ...validation, upi_id: true });
-                    }
-                  }}
-                />
-                {validation.valid_upi_id && (
-                  <p className="error_text">Please enter a valid UPI ID</p>
-                )}
-              </div>
+                      if (e) {
+                        setValidation({ ...validation, upi_id: false });
+                      } else {
+                        setValidation({ ...validation, upi_id: true });
+                      }
+                    }}
+                  />
+                  {validation.valid_upi_id && (
+                    <p className="error_text">Please enter a valid UPI ID</p>
+                  )}
+                </div>
 
-              <div className="form-group mb-3">
-                <input
-                  type="checkbox"
-                  role={"button"}
-                  checked={checked}
-                  onChange={() => setChecked(!checked)}
-                />{" "}
-                <label className="input-title">I have made the payment</label>{" "}
-              </div>
+                <div className="form-group mb-3">
+                  <input
+                    type="checkbox"
+                    role={"button"}
+                    checked={checked}
+                    onChange={() => setChecked(!checked)}
+                  />{" "}
+                  <label className="input-title">I have made the payment</label>{" "}
+                </div>
 
-              {checked && (
-                <>
-                  {/* <div className="form-group mb-3 flex-input-grp">
+                {checked && (
+                  <>
+                    {/* <div className="form-group mb-3 flex-input-grp">
                     <div className="inr-input">
                       <InputText
                         type="text"
@@ -447,7 +465,7 @@ const UpiPayment = ({ addFund, setAddFund, getDepositStat }) => {
                       </div>
                     </div>
                   </div> */}
-                  {/* <div className="form-group mb-3">
+                    {/* <div className="form-group mb-3">
                     <InputText
                       type="text"
                       title={"Transcation Id"}
@@ -494,22 +512,22 @@ const UpiPayment = ({ addFund, setAddFund, getDepositStat }) => {
                       <p className="error_text">Please enter a valid UPI ID</p>
                     )}
                   </div> */}
-                  <button
-                    // disabled={
-                    //   upiPayment?.upi_id.length === 0 ||
-                    //   !validateUpi(upiPayment?.upi_id)
-                    // }
-                    disabled={loading}
-                    type="button"
-                    className="btn btn-dark mt-4 mb-2 mx-auto"
-                    onClick={handlePayment}
-                  >
-                    {!loading ? "Submit" : "Loading"}
-                  </button>
-                </>
-              )}
+                    <button
+                      // disabled={
+                      //   upiPayment?.upi_id.length === 0 ||
+                      //   !validateUpi(upiPayment?.upi_id)
+                      // }
+                      disabled={loading}
+                      type="button"
+                      className="btn btn-dark mt-4 mb-2 mx-auto"
+                      onClick={handlePayment}
+                    >
+                      {!loading ? "Submit" : "Loading"}
+                    </button>
+                  </>
+                )}
 
-              {/* <div className="form-group mb-3 flex-input-grp">
+                {/* <div className="form-group mb-3 flex-input-grp">
                 <div className="inr-input">
                   <InputText
                     type="text"
@@ -561,7 +579,7 @@ const UpiPayment = ({ addFund, setAddFund, getDepositStat }) => {
                 </div>
               </div> */}
 
-              {/* <div className="form-group mb-3">
+                {/* <div className="form-group mb-3">
                 <InputText
                   type="text"
                   title={"Transcation Id"}
@@ -584,7 +602,7 @@ const UpiPayment = ({ addFund, setAddFund, getDepositStat }) => {
                 />
               </div> */}
 
-              {/* <div className="form-group mb-3">
+                {/* <div className="form-group mb-3">
                 <InputText
                   type="text"
                   title={"UPI ID"}
@@ -609,10 +627,11 @@ const UpiPayment = ({ addFund, setAddFund, getDepositStat }) => {
                   <p className="error_text">Please enter a valid UPI ID</p>
                 )}
               </div> */}
+              </>
             </>
-          </>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

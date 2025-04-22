@@ -19,6 +19,7 @@ function ReactGoogleLogin() {
   const history = useHistory();
   const query = useQuery(location.search);
   const redirect = query.get("redirect");
+  const gameRedirect = query.get("from_game");
 
   const responseGoogle = async (response) => {
     if (user?.login && getCookies()) {
@@ -45,7 +46,9 @@ function ReactGoogleLogin() {
         token,
       });
       if (signData?.data?.data?.token) {
-        dispatch(user_load_by_token_thunk(signData?.data?.data?.token));
+        dispatch(
+          user_load_by_token_thunk(signData?.data?.data?.token, gameRedirect)
+        );
         setCookies(signData.data.data.token);
         history.push("/account/profile");
       }

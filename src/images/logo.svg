@@ -2,7 +2,7 @@
   <g id="logo" transform="translate(-32 -38)">
     <g id="Group" transform="translate(32 32)">
       <text id="Jump.trade" transform="translate(0 23)" fill="#fff" font-size="21" font-family="HelveticaNeueLT-65Md, Neue Helvetica" font-weight="500"><tspan x="0" y="0">Jump.trade</tspan></text>
-      <text id="Powered_by_GuardianL" data-name="Powered by GuardianL" transform="translate(58 40)" fill="#fff" font-size="10" font-family="HelveticaNeueLT-55Rm, Neue Helvetica"><tspan x="0" y="0">Powered by GuardianLink</tspan></text>
+      <text id="Powered_by_Jump_trade" data-name="Powered by Jump_trade" transform="translate(58 40)" fill="#fff" font-size="10" font-family="HelveticaNeueLT-55Rm, Neue Helvetica"><tspan x="0" y="0">Powered by Jump Trade</tspan></text>
     </g>
   </g>
 </svg>

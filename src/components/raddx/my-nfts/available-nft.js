@@ -10,13 +10,15 @@ import {
   allowForRental,
   bundleSaleSplitApi,
   listBundleOnSale,
-  userOwnedNFTsApi,
+  userOwnedNFTsApi
 } from "../../../api/methods-marketplace";
 import { GAMES } from "../../../utils/game-config";
 import {
   currencyFormat,
   formattedBundlePrice,
-  openWindowBlank,
+  getOS,
+  openWindow,
+  openWindowBlank
 } from "../../../utils/common";
 
 import NFTCardList from "./nft-card-list";
@@ -30,6 +32,8 @@ import failureAnim from "../../../images/jump-trade/json/Cancel.json";
 import "./styles.scss";
 import { FaCheckCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { useQuery } from "../../../hooks/url-params";
 
 const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
   const [list, setList] = useState([]);
@@ -58,7 +62,7 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
     page,
     filters = null,
     load = false,
-    filterArePresent = false,
+    filterArePresent = false
   }) => {
     if (filters) {
       filtersRef.current = filters;
@@ -72,7 +76,7 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
       const result = await userOwnedNFTsApi(page, {
         sale_kind: "",
         game_names: [GAMES.RADDX],
-        ...filtersRef.current,
+        ...filtersRef.current
       });
       if (load) {
         setList([...list, ...result?.data?.data?.nfts]);
@@ -124,7 +128,7 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
     page,
     filters,
     disabledStatus = false,
-    filterArePresent,
+    filterArePresent
   }) => {
     setSelectedAll(false);
     setSelected([]);
@@ -252,90 +256,88 @@ const AvailableNFT = ({ setActiveTab, hideMenus, setCount }) => {
 
         {list?.length > 0 && (
           <div className={`btn-fixed ${hideMenus ? "hiddenMenu" : ""}`}>
-            {!hideMenus && (
-              <>
-                {selected?.length > 1 ? (
-                  <OverlayTrigger
-                    trigger={["click"]}
-                    rootClose={true}
-                    placement="top"
-                    overlay={popover()}
-                  >
-                    <button
-                      className="btn btn-dark"
-                      type="button"
-                      disabled={selected?.length === 0 || selected.length > 1}
-                    >
-                      List For Sale
-                    </button>
-                  </OverlayTrigger>
-                ) : (
-                  <button
-                    className="btn btn-dark"
-                    type="button"
-                    disabled={
-                      selected?.length === 0 ||
-                      selected?.length > 1 ||
-                      buttonDisabled
+            {selected?.length > 1 ? (
+              <OverlayTrigger
+                trigger={["click"]}
+                rootClose={true}
+                placement="top"
+                overlay={popover()}
+              >
+                <button
+                  className="btn btn-dark"
+                  type="button"
+                  disabled={selected?.length === 0 || selected.length > 1}
+                >
+                  List For Sale
+                </button>
+              </OverlayTrigger>
+            ) : (
+              <button
+                className="btn btn-dark"
+                type="button"
+                disabled={
+                  selected?.length === 0 ||
+                  selected?.length > 1 ||
+                  buttonDisabled
+                }
+                onClick={() => {
+                  if (selected?.length === 1) {
+                    const [first] = selected;
+                    if (first && !hideMenus) {
+                      openWindowBlank(
+                        `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}`
+                      );
+                    } else if (first && hideMenus) {
+                      openWindow(
+                        `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}?hideMenus=true&hideBack=true`
+                      );
                     }
-                    onClick={() => {
-                      if (selected?.length === 1) {
-                        const [first] = selected;
-                        first &&
-                          openWindowBlank(
-                            `${process.env.REACT_APP_MARKETPLACE_URL}/nft-marketplace/details/${first}`
-                          );
-                      }
-                    }}
-                  >
-                    List For Sale
-                  </button>
-                )}
-              </>
+                  }
+                }}
+              >
+                List For Sale
+              </button>
             )}
-            {!hideMenus && (
-              <>
-                {selected?.length > 3 ||
-                selected?.length === 1 ||
-                list
-                  .filter((obj) => selected.includes(obj.slug))
-                  .filter((xx) => xx.core_statistics.role.value === "Car")
-                  .length > 0 ||
-                list
-                  .filter((obj) => selected.includes(obj.slug))
-                  .filter((xx) => xx.core_statistics.role.value === "Land")
-                  .length > 1 ||
-                list
-                  .filter((obj) => selected.includes(obj.slug))
-                  .filter((xx) => xx.core_statistics.role.value === "Building")
-                  .length > 1 ? (
-                  <OverlayTrigger
-                    trigger={["click"]}
-                    rootClose={true}
-                    placement="top"
-                    overlay={BundlePopover()}
-                  >
-                    <button
-                      className="btn btn-dark"
-                      type="button"
-                      disabled={selected?.length === 0 || selected?.length >= 3}
-                    >
-                      List For Bundle Sale
-                    </button>
-                  </OverlayTrigger>
-                ) : (
-                  <button
-                    className="btn btn-dark"
-                    type="button"
-                    disabled={selected?.length >= 3 || selected?.length <= 1}
-                    onClick={() => {
-                      setBundlePop(!bundlePop);
-                    }}
-                  >
-                    List For Bundle Sale
-                  </button>
-                )}
-              </>
+
+            {selected?.length > 3 ||
+            selected?.length === 1 ||
+            list
+              .filter((obj) => selected.includes(obj.slug))
+              .filter((xx) => xx.core_statistics.role.value === "Car").length >
+              0 ||
+            list
+              .filter((obj) => selected.includes(obj.slug))
+              .filter((xx) => xx.core_statistics.role.value === "Land").length >
+              1 ||
+            list
+              .filter((obj) => selected.includes(obj.slug))
+              .filter((xx) => xx.core_statistics.role.value === "Building")
+              .length > 1 ? (
+              <OverlayTrigger
+                trigger={["click"]}
+                rootClose={true}
+                placement="top"
+                overlay={BundlePopover()}
+              >
+                <button
+                  className="btn btn-dark"
+                  type="button"
+                  disabled={selected?.length === 0 || selected?.length >= 3}
+                >
+                  List For Bundle Sale
+                </button>
+              </OverlayTrigger>
+            ) : (
+              <button
+                className="btn btn-dark"
+                type="button"
+                disabled={selected?.length >= 3 || selected?.length <= 1}
+                onClick={() => {
+                  setBundlePop(!bundlePop);
+                }}
+              >
+                List For Bundle Sale
+              </button>
             )}
           </div>
         )}
@@ -359,7 +361,7 @@ const SelectAll = ({
   selected,
   handleSelectAll,
   setSelectedAll,
-  disabledStatus,
+  disabledStatus
 }) => {
   if (
     selected.length &&
@@ -399,7 +401,7 @@ const ListForBundle = ({
   bundlePop,
   setBundlePop,
   getList = () => {},
-  setSelected,
+  setSelected
 }) => {
   const [modalType, setModalType] = useState("listedonsale");
   const [modalState, setModalState] = useState({});
@@ -457,7 +459,7 @@ const ListedOnSaleModal = ({
   selected = [],
   setModalType,
   setModalState,
-  onHide = () => {},
+  onHide = () => {}
 }) => {
   const [totalSum, setTotalSum] = useState(0);
   const [nftPrices, setNftPrices] = useState({});
@@ -508,7 +510,7 @@ const ListedOnSaleModal = ({
         nft_slug: curr,
         buy_amount: nftPrices[curr],
         is_buy: true,
-        is_bid: false,
+        is_bid: false
       };
       return [...acc, request];
     }, []);
@@ -634,9 +636,12 @@ const ConfirmedModal = ({
   setModalType,
   modalState,
   setModalState,
-  onHide = () => {},
+  onHide = () => {}
 }) => {
   const { user } = useSelector((state) => state);
+  const location = useLocation();
+  const query = useQuery(location.search);
+  const hideMenus = query.get("hideMenus");
   let { bundle, paymentInfo } = modalState;
 
   const handleBundleSale = async () => {
@@ -697,22 +702,36 @@ const ConfirmedModal = ({
                 </li>
                 <li>
                   <span className="key">Buy Amount</span>
-                  <span className="value">${paymentInfo?.buy_amount}</span>
+                  <span className="value">
+                    {getOS() === "iOS" && hideMenus
+                      ? currencyFormat(paymentInfo?.buy_amount, "")
+                      : currencyFormat(paymentInfo?.buy_amount, "USD")}
+                  </span>
                 </li>
                 <li>
                   <span className="key">Artist Fee</span>
-                  <span className="value">${paymentInfo?.artist_amount}</span>
+                  <span className="value">
+                    {getOS() === "iOS"
+                      ? currencyFormat(paymentInfo?.artist_amount, "")
+                      : currencyFormat(paymentInfo?.artist_amount, "USD")}
+                  </span>
                 </li>
                 <li>
                   <span className="key">
                     Service Fee ({paymentInfo?.service} %)
                   </span>
-                  <span className="value">${paymentInfo?.service_amount}</span>
+                  <span className="value">
+                    {getOS() === "iOS" ? currencyFormat(0, "gem") : "$"}
+                    {paymentInfo?.service_amount}
+                  </span>
                 </li>
                 {user?.data?.user?.apply_sale_tds && (
                   <li>
                     <span className="key">TDS ({paymentInfo?.tds_fee} %)</span>
-                    <span className="value">${paymentInfo?.tds_amount}</span>
+                    <span className="value">
+                      {getOS() === "iOS" ? currencyFormat(0, "gem") : "$"}
+                      {paymentInfo?.tds_amount}
+                    </span>
                   </li>
                 )}
               </ul>
@@ -725,7 +744,10 @@ const ConfirmedModal = ({
         <div className="bundle-total-value">
           <h4>
             <span className="key">Total price</span>
-            <span className="value">${paymentInfo?.total_price}</span>
+            <span className="value">
+              {getOS() === "iOS" ? currencyFormat(0, "gem") : "$"}
+              {paymentInfo?.total_price}
+            </span>
           </h4>
         </div>
         <button

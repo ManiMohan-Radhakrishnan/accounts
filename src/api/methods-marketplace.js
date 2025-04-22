@@ -295,6 +295,16 @@ export const fuseNFTApi = (input) =>
 export const getFusorLogs = () =>
   marketplaceAxios.get(`/nfts/show_fusor_histories`);
 
+export const getBurnLogs = (page, size = 25) =>
+  marketplaceAxios.get(`/nfts/burn_nft_histories?page=${page}`, {
+    params: {
+      size: size,
+    },
+    paramsSerializer: (params) => {
+      return ParamsSerialize(params);
+    },
+  });
+
 export const batBurnApi = (slug, value) =>
   marketplaceAxios.post(`/nfts/${slug}/burn_nft`, value);
 
